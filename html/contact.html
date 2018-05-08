@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta name="viewport" charset="ISO-8859-1">
+<title>Customers First</title>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link href="css/style.css" rel="stylesheet">
 
@@ -13,12 +15,11 @@ $(document).ready(function() {
     $("#contact-form").validate();
     });
 </script>
-
-<title>Customers First</title>
 <style>
-input::placeholder {
-opacity: 5;
+.form-links {
+	position: relative;
 }
+
 </style>
 </head>
 <body>
@@ -47,14 +48,14 @@ opacity: 5;
 	    </div> 
 	    
 	    <div class="form-group"> 
-	        <label for="phone">Telephone: </label>
+	        <label for="phone"> Telephone: </label>
 	        <input id="phone" name="phone" type="tel" placeholder="10-digit phone number" required>
     	</div>
 
 		<br>
 
+		<legend>Feedback</legend>
 		<div class="form-group">
-			<legend> Feedback </legend>
 			<textarea rows="4" cols="50" placeholder="Enter your concerns here."></textarea>
 		</div> 
 		
@@ -65,13 +66,13 @@ opacity: 5;
   	</form>
   </div>
   
-    <nav>
+   <div class="form-links">
 	 <ul>
 	    <li><a href="">Login Issues</a></li>
 	    <li><a href="">Order concerns</a></li>
 	    <li><a href="">FAQ</a></li>
 	</ul>
-  </nav>
+  </div>
   
 </body>
 </html>
