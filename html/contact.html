@@ -1,29 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="style.css" rel="stylesheet">
+<meta name="viewport" charset="ISO-8859-1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link href="css/style.css" rel="stylesheet">
 
-<SCRIPT>
-            function MsgBox (textstring) {
-                alert (textstring) 
-            }
-        </SCRIPT>
-         <script language="JavaScript">
-    function showInput() {
-        document.getElementById('display').innerHTML = 
-                    document.getElementById("user_input").value;
-    }
-  </script>
-<meta charset="ISO-8859-1">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jQuery.Validate/1.6/jQuery.Validate.min.js"></script>
+
+<script language="JavaScript">
+$(document).ready(function() {
+    $("#contact-form").validate();
+    });
+</script>
+
 <title>Customers First</title>
+<style>
+input::placeholder {
+opacity: 5;
+}
+</style>
 </head>
 <body>
- <header role="banner">
-	<h1>CONTACT US</h1>
-	<p>Please feel free to contact us!!</p>
-  </header>
- 
-  <nav>
+  
+  <div class = "form-title">
+  	<h1> Contact Us </h1>
+  </div>
+  	
+  <div id= "form">
+	  <form id = "contact-form">
+	  	<legend>Personal details</legend> 
+	  	
+	    <div class="form-group"> 
+	        <label for="first_name"> First Name: </label>
+	        <input id="first_name" name="first_name" type="text" placeholder="First name only" required autofocus> 
+	    </div>
+	    
+	    <div class="form-group"> 
+	        <label for="last_name"> Last Name: </label>
+	        <input id="last_name" name="last_name" type="text" placeholder="Last name only" required autofocus> 
+	    </div>
+	
+	    <div class="form-group"> 
+	        <label for="email"> Email: </label> 
+	        <input id="email" name="email" type="email" placeholder="example@domain.com" required>
+	    </div> 
+	    
+	    <div class="form-group"> 
+	        <label for="phone">Telephone: </label>
+	        <input id="phone" name="phone" type="tel" placeholder="10-digit phone number" required>
+    	</div>
+
+		<br>
+
+		<div class="form-group">
+			<legend> Feedback </legend>
+			<textarea rows="4" cols="50" placeholder="Enter your concerns here."></textarea>
+		</div> 
+		
+	    <div class='form-controls'>
+	    	<input class="btn btn-default" type="submit" value="Submit">
+	    </div>
+     
+  	</form>
+  </div>
+  
+    <nav>
 	 <ul>
 	    <li><a href="">Login Issues</a></li>
 	    <li><a href="">Order concerns</a></li>
@@ -31,51 +73,5 @@
 	</ul>
   </nav>
   
-  <div class = "form-title">
-  	<h1> ContactUS</h1>
-  	</div>
-  	
-  <div id= "form">
-  <form id = "contact-form">
-    <fieldset> 
-    <legend>Personal details</legend> 
-    <div> 
-        <label>First Name
-        <input id="given-name" name="given-name" type="text" placeholder="First name only" required autofocus> 
-		</label>
-    </div>
-    <div> 
-        <label>Last Name
-        <input id="family-name" name="family-name" type="text" placeholder="Last name only" required autofocus> 
-		</label>
-    </div>
-
-    <div> 
-        <label>Email 
-        <input id="email" name="email" type="email" placeholder="example@domain.com" required>
-		</label> 
-    </div> 
-    
-    <div> 
-        <label>Telephone 
-        <input id="phone" name="phone" type="tel" placeholder="10 digit phone number" required>
-		</label> 
-    </div>
-    <br>
-  	<br>
-  	<br> 
-	<div>
-	<h2> Tell us more about any issues.
-    	</h2>
-	<textarea rows="4" cols="50">
-	Enter your concerns here.
-	</textarea>
-	</div> 
-    <div class='form-controls'>
-     <input type="submit" onclick="showInput();" value="submit">
-     </div>
-  </fieldset>
-  </form>
-  </div>
 </body>
 </html>

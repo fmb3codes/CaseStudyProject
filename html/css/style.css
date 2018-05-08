@@ -29,7 +29,8 @@ header > div {
 
 /* Nav */
 
-/* ul {
+/*
+header > ul {
 	margin: 0; 
 	padding: 0; 
 	width: 480px;
@@ -37,7 +38,7 @@ header > div {
 	left: 0;
 }
 
-li {
+header > ul > li {
 	display: inline;
 	float: left;
 	background-color: #cad86c;
@@ -49,13 +50,15 @@ li {
 	
 }
 
-li a {
+header > ul > li a {
 	text-decoration: none;
 }
 
-li:hover {
+header > ul > li:hover {
 	background-color: white;
-} */
+}
+
+*/
 
 
 /*********** CSS Styling for forms **************/
@@ -112,9 +115,8 @@ li:hover {
 }
 
 .form-controls {
-	display: flex;
+	text-align: center;
 	justify-content: space-evenly;
-	padding-top: 20px;
 }
 
 .form-controls input[type=submit],
@@ -135,4 +137,8 @@ li:hover {
 .form-controls input[type=submit]:hover,
 .form-controls input[type=reset]:hover {
 	cursor: pointer;
+}
+
+.form-group > input::placeholder {
+	opacity: .5;
 }
