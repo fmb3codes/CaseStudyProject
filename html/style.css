@@ -1,0 +1,127 @@
+/* CSS Styling for body */
+body {
+	background-color: #d9ffb3;
+}
+
+/* CSS Styling for header */
+header {
+	text-align: center;
+}
+
+header > img {
+	width: 100%;
+	height: 100px; 
+}
+
+ul {
+	margin: 0; 
+	padding: 0; 
+	width: 480px;
+	position: absolute;
+	left: 0;
+}
+
+li {
+	display: inline;
+	float: left;
+	background-color: #cad86c;
+	padding: 4px 15px;
+	font-family: "arial";
+	text-decoration: none;
+	/*margin: 0px;
+	margin-left: -33px;*/
+	
+}
+
+li a {
+	text-decoration: none;
+}
+
+li:hover {
+	background-color: white;
+}
+
+
+/* CSS Styling for forms */
+.form-title {
+	display: flex;
+	justify-content: center;
+}
+	
+.form-title h1 {
+	font-family: 'Arial';
+	color: green;
+	padding: 40px;
+	border-bottom: 2px solid green;
+}
+
+/* for all h1s */
+h1 {
+	font-family: 'Arial';
+	color: green;
+	padding: 40px;
+}
+
+#form {
+	display: flex;
+	justify-content: center;
+}
+
+#register-form,
+#contact-form {
+	border: 2px solid green;
+	padding: 25px;
+	background-color: white;
+}
+
+#register-form label {
+	font-family: 'arial';
+	font-size: 14px;
+	display: inline-block;
+	width: 140px;
+	text-align: left;
+	margin-bottom: 20px;
+}
+
+#register-form input[type=text],
+#register-form input[type=password],
+#register-form input[type=email] {
+	border: 2px solid lightgreen;
+	border-radius: 4px;
+	line-height: 20px;
+	padding-left: 3px;
+}
+
+.form-controls {
+	text-align: center;
+	justify-content: space-evenly;
+	/*padding-top: 20px;*/
+}
+
+.form-controls input[type=submit],
+.form-controls input[type=reset] {
+	background-color: #15AE5C;
+	font-family: 'arial';
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+}
+
+.form-controls input[type=reset] {
+	margin-left: 1px;
+}
+
+.form-controls input[type=submit]:hover,
+.form-controls input[type=reset]:hover {
+	cursor: pointer;
+}
+
+.form-group > input::placeholder {
+	opacity: .5;
+}
+
+
+
+
