@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<meta name="viewport" charset="ISO-8859-1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link href="style.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jQuery.Validate/1.6/jQuery.Validate.min.js"></script>
@@ -12,18 +14,37 @@ $(document).ready(function() {
     $("#contact-form").validate();
     });
 </script>
-<meta charset="ISO-8859-1">
+
+
 <title>Customers First</title>
+<style>
+input::placeholder {
+opacity: 5;
+}
+</style>
 </head>
 <body>
- 
-  <nav>
-	 <ul>
-	    <li><a href="">Login Issues</a></li>
-	    <li><a href="">Order concerns</a></li>
-	    <li><a href="">FAQ</a></li>
-	</ul>
-  </nav>
+
+<!-- HEADER To be added to all pages until further notice -->
+	<header role="banner">
+		 <div class="jumbotron">
+			<h1>Welcome to Mummy's Restaurant!</h1>
+		</div> 
+	</header>
+	
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <ul class="nav navbar-nav">
+	      <li class="active"><a href="#">Home</a></li>
+	      <li><a href="meals.html">Menu</a></li>
+	      <li><a href="about.html">About Us</a></li>
+	      <li><a href="contact.html">Contact Us</a></li>
+	      <li><a href="customers/registration.html">Register</a></li>
+	    </ul>
+	  </div>
+	</nav>
+	  
+  <!-- CONTACT FORM -->
   
   <div class = "form-title">
   	<h1> Contact Us </h1>
@@ -66,5 +87,15 @@ $(document).ready(function() {
      
   	</form>
   </div>
+  
+    <nav>
+	 <ul>
+	    <li><a href="">Login Issues</a></li>
+	    <li><a href="">Order concerns</a></li>
+	    <li><a href="">FAQ</a></li>
+	</ul>
+  </nav>
+  
+
 </body>
 </html>
