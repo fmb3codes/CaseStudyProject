@@ -1,0 +1,514 @@
+CREATE TABLE customers (
+         C_ID		INT NOT NULL,
+         First_name     VARCHAR2(15) NOT NULL,
+	 Last_name      VARCHAR2(20) NOT NULL,
+         Password       VARCHAR2(9),
+         last_login   DATE,
+	 Email		VARCHAR2(320),
+         Home_number     NUMBER(9) NOT NULL,
+	 Mobile_number  NUMBER(9) NOT NULL,
+	PRIMARY KEY (C_ID)
+);
+
+
+##############################################################
+The following code is for auto-incrementing C_ID
+-----------------------------------------------------------
+
+CREATE SEQUENCE cust_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_CID
+  BEFORE INSERT ON CUSTOMERS
+  FOR EACH ROW
+BEGIN
+  SELECT cust_seq.nextval
+    INTO :new.C_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing C_ID
+##############################################################
+
+
+
+CREATE TABLE customers_locations (
+         CL_ID		INT primary key,
+         LT_ID    	INT NOT NULL,
+	 Street_Address VARCHAR2(20) NOT NULL,
+         CITY   	VARCHAR2(20) NOT NULL,
+	 State		VARCHAR2(15) NOT NULL,
+	 Zip_code	VARCHAR2(5) NOT NULL, 
+	 C_ID		INT NOT NULL,           
+	 CONSTRAINT C_ID_FK FOREIGN KEY (C_ID) REFERENCES CUSTOMERS(C_ID)
+	 CONSTRAINT LT_ID_FK FOREIGN KEY (C_ID) REFERENCES CUSTOMERS(C_ID)
+);
+##############################################################
+The following code is for auto-incrementing CL_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE cust_loc_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_CLID
+  BEFORE INSERT ON CUSTOMERS_LOCATIONS
+  FOR EACH ROW
+BEGIN
+  SELECT cust_loc_seq.nextval
+    INTO :new.CL_ID
+    FROM dual;
+END;
+/
+----------------------------------------------------------------
+The following code is for auto-incrementing CL_ID
+#################################################################
+
+CREATE TABLE Locations_types (
+         LT_ID		INT NOT NULL,
+         LOCation_name	VARCHAR2(5) NOT NULL
+);
+
+##############################################################
+The following code is for auto-incrementing LT_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE loc_type_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_LTID1
+  BEFORE INSERT ON locations_types
+  FOR EACH ROW
+BEGIN
+  SELECT loc_type_seq.nextval
+    INTO :new.LT_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing LT_ID
+##############################################################
+
+CREATE TABLE meals (
+         M_ID		INT primary key,
+         description   	VARCHAR(120) NOT NULL,
+	 name		VARCHAR2(20) NOT NULL,
+         Price	        decimal(5,2) NOT NULL,
+         image_path   	VARCHAR2(255) NOT NULL,
+	 MEAL_OF_DAY	DATE,
+	 MT_ID		VARCHAR2(5) NOT NULL
+);
+
+
+##############################################################
+The following code is for auto-incrementing M_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE meals_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_MID
+  BEFORE INSERT ON MEALS
+  FOR EACH ROW
+BEGIN
+  SELECT meals_seq.nextval
+    INTO :new.M_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing M_ID
+##############################################################
+
+
+
+
+
+CREATE TABLE Payment_types (
+         PT_ID		INT primary key,
+         Payment_name	VARCHAR2(30)
+);
+
+
+##############################################################
+The following code is for auto-incrementing PT_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE pay_type_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_PTID
+  BEFORE INSERT ON Payment_types
+  FOR EACH ROW
+BEGIN
+  SELECT pay_type_seq.nextval
+    INTO :new.PT_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing PT_ID
+##############################################################
+
+CREATE TABLE Payments (
+         P_ID		INT,
+         PT_ID		INT,
+	 O_ID		INT,
+	PRIMARY KEY(P_ID,O_ID),
+	CONSTRAINT PT_ID_FK FOREIGN KEY(PT_ID) REFERENCES PAYMENT_TYPES (PT_ID),
+	CONSTRAINT O_ID_FK FOREIGN KEY(O_ID) REFERENCES ORDERS (O_ID)
+);
+
+##############################################################
+The following code is for auto-incrementing P_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE payments_type_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_PID
+  BEFORE INSERT ON Payments
+  FOR EACH ROW
+BEGIN
+  SELECT payments_type_seq.nextval
+    INTO :new.P_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing P_ID
+##############################################################
+
+
+
+CREATE TABLE Order_status (
+         OS_ID		INT,
+         name		VARCHAR(25),
+	PRIMARY KEY(OS_ID)
+);
+
+
+##############################################################
+The following code is for auto-incrementing OS_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE order_status_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_OSID
+  BEFORE INSERT ON order_status
+  FOR EACH ROW
+BEGIN
+  SELECT order_status_seq.nextval
+    INTO :new.OS_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing OS_ID
+##############################################################
+
+
+
+
+CREATE TABLE meal_types (
+         MT_ID		INT,
+         name		VARCHAR(25),
+	PRIMARY KEY(MT_ID)
+);
+
+
+##############################################################
+The following code is for auto-incrementing MT_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE meals_types_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_MTID
+  BEFORE INSERT ON MEAL_TYPES
+  FOR EACH ROW
+BEGIN
+  SELECT meals_types_seq.nextval
+    INTO :new.MT_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing MT_ID
+##############################################################
+
+
+CREATE TABLE delivering_points (
+         DP_ID		INT NOT NULL,
+         Street_Address VARCHAR2(20) NOT NULL,
+	 City      	VARCHAR2(20) NOT NULL,
+         State      	VARCHAR2(15) NOT NULL,
+         Zip_code  	char(5),
+         Home_number    NUMBER(9) NOT NULL,
+	PRIMARY KEY (DP_ID)
+);
+
+
+
+
+##############################################################
+The following code is for auto-incrementing DP_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE delivering_points_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_DPID
+  BEFORE INSERT ON delivering_points
+  FOR EACH ROW
+BEGIN
+  SELECT delivering_points_seq.nextval
+    INTO :new.DP_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing DP_ID
+##############################################################
+
+
+
+
+CREATE TABLE customer_profiles (
+         CP_ID	   INT NOT NULL,
+	 PRIMARY KEY (CP_ID)
+);
+
+
+##############################################################
+The following code is for auto-incrementing CP_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE customer_profiles_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_CPID
+  BEFORE INSERT ON customer_profiles
+  FOR EACH ROW
+BEGIN
+  SELECT delivering_points_seq.nextval
+    INTO :new.CP_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing CP_ID
+##############################################################
+
+
+
+CREATE TABLE Order_meals (
+         OM_ID	   INT NOT NULL PRIMARY KEY
+);
+
+
+
+##############################################################
+The following code is for auto-incrementing OM_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE Order_meals_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_OMID
+  BEFORE INSERT ON Order_meals
+  FOR EACH ROW
+BEGIN
+  SELECT Order_meals_seq.nextval
+    INTO :new.OM_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing OM_ID
+##############################################################
+
+
+CREATE TABLE Orders(
+		O_ID	INT NOT NULL PRIMARY KEY,
+		Order_Date	DATE,
+		Delivery_Date	DATE,
+		Order_on_hold	CHAR(1 byte),
+		Times_changed	INT
+);
+
+
+
+
+##############################################################
+The following code is for auto-incrementing O_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE Orders_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_OID
+  BEFORE INSERT ON Orders
+  FOR EACH ROW
+BEGIN
+  SELECT Orders_seq.nextval
+    INTO :new.O_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing O_ID
+##############################################################
+
+
+
+CREATE TABLE Card_types(
+	CT_ID	INT NOT NULL PRIMARY KEY,
+	Name	VARCHAR2(40)
+);
+
+
+##############################################################
+The following code is for auto-incrementing CT_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE card_type_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_CTID
+  BEFORE INSERT ON Card_types
+  FOR EACH ROW
+BEGIN
+  SELECT card_type_seq.nextval
+    INTO :new.CT_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing CT_ID
+##############################################################
+
+
+CREATE TABLE Credit_cards(
+	CC_ID INT NOT NULL PRIMARY KEY,
+	name_on_card	VARCHAR2(100),
+	Card_number	VARCHAR2(16),
+	CT_ID		INT NOT NULL,
+	constraint CT_ID_FK FOREIGN KEY(CT_ID) references card_types(CT_ID)
+);
+
+
+##############################################################
+The following code is for auto-incrementing CC_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE credit_card_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_CCID
+  BEFORE INSERT ON Credit_cards
+  FOR EACH ROW
+BEGIN
+  SELECT credit_card_seq.nextval
+    INTO :new.CC_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing CC_ID
+##############################################################
+
+
+
+CREATE TABLE Customers_Credit_cards(
+	CC_ID	INT NOT NULL,
+	C_ID	INT NOT NULL,
+	constraint CC_ID_FK FOREIGN KEY(CC_ID) references CREDIT_CARDS(CC_ID),
+	constraint C_ID2_FK FOREIGN KEY(C_ID) references CUSTOMERS(C_ID),
+	PRIMARY KEY(CC_ID,c_ID)
+);
+
+
+
+
+
+
+CREATE TABLE Credit_card_details(
+	P_ID	INT NOT NULL,
+	CC_ID	INT NOT NULL,
+	PRIMARY KEY(CC_ID,P_ID),
+	constraint CC_ID2_FK FOREIGN KEY(CC_ID) references CREDIT_CARDS(CC_ID),
+	constraint P_ID_FK FOREIGN KEY(P_ID,O	_ID) references PAYMENTS(P_ID,O_ID)
+);
+
+
+##############################################################
+The following code is for auto-incrementing CT_ID
+-------------------------------------------------------------
+
+CREATE SEQUENCE card_type_seq START WITH 1;
+
+
+CREATE OR REPLACE TRIGGER AUTO_CTID
+  BEFORE INSERT ON Card_types
+  FOR EACH ROW
+BEGIN
+  SELECT card_type_seq.nextval
+    INTO :new.CT_ID
+    FROM dual;
+END;
+/
+--------------------------------------------------------------
+The following code is for auto-incrementing CT_ID
+##############################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE customers (
+         C_ID      NUMBER(5) PRIMARY KEY,
+         First_name     VARCHAR2(15) NOT NULL,
+	 Last_name     VARCHAR2(20) NOT NULL,
+         Password        NUMBER(9) ENCRYPT,
+         job        VARCHAR2(10),
+         mgr        NUMBER(5),
+         hiredate   DATE DEFAULT (sysdate),
+         photo      BLOB,
+         sal        NUMBER(7,2),
+         hrly_rate  NUMBER(7,2) GENERATED ALWAYS AS (sal/2080),
+         comm       NUMBER(7,2),
+         deptno     NUMBER(3) NOT NULL
+                     CONSTRAINT admin_dept_fkey REFERENCES hr.departments
+                     (department_id))
+   TABLESPACE admin_tbs
+   STORAGE ( INITIAL 50K);
+
+COMMENT ON TABLE hr.admin_emp IS 'Enhanced employee table';
