@@ -1,0 +1,7 @@
+CREATE USER db_u2
+IDENTIFIED BY pass
+DEFAULT TABLESPACE new_tablespace1
+/
+
+GRANT DBA TO db_u2
+/
