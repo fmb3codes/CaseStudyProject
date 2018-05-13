@@ -130,7 +130,12 @@ form input[type=email] {
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    border: 2px solid green;
     
+}
+
+.my-orders > table > td {
+	border: none;
 }
 
 .my-orders table:nth-child(even){background-color: #f2f2f2;}
