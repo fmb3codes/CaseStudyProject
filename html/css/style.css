@@ -4,6 +4,12 @@ body {
 	
 }
 
+/* CSS Styling vertical division */
+.vertical-division
+{
+    border-left:    1px solid hsla(200, 10%, 50%,100);
+}
+
 /* CSS Styling for header */
 header {
 	text-align: center;
@@ -94,6 +100,44 @@ form input[type=email] {
 .form-controls input[type=reset]:hover {
 	cursor: pointer;
 }
+
+
+/****************** TABLES *********************/
+
+.orders-title {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 70px;
+}
+.orders-title h1 {
+	font-family: 'Arial';
+	color: green;
+	padding: 40px;
+	border-bottom: 2px solid green;
+}
+
+ 
+.my-orders 
+{
+	display: flex;
+	justify-content: center;
+	margin-bottom: 15px;
+	padding-left: 150px;
+	padding-right: 150px;
+}
+
+.my-orders > table {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    
+}
+
+.my-orders table:nth-child(even){background-color: #f2f2f2;}
+
+.my-orders table:hover {background-color: #ddd;}
+ 
+ 
 
 /****************** FOOTER ********************/
 
