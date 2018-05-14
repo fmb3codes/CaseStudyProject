@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Admin Login</title>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">  
-<link href="css/style.css" rel="stylesheet">
+<meta name="viewport" charset="ISO-8859-1">
+<title>Administration Login</title>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/style.css" rel="stylesheet">
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jQuery.Validate/1.6/jQuery.Validate.min.js"></script>
+
+   
+<script>
+function writeData(e) {
+	// placeholder
+}
+
+$(document).ready(function() {
+    $("#register-form").validate();
+    });
+</script>
 </head>
 <body>
 
@@ -26,6 +41,42 @@
 	    </ul>
 	  </div>
 	</nav>
+		<div class="form-title">
+		<h1>Mummy's Administration Login</h1>
+	</div>
+
+	<div class="form">
+		<form id="register-form">
+			<div class="form-group">
+				<label for="user_name">Username: </label>
+				<input name="user_name" type="text" maxlength="10" required>
+			</div>
+	
+			<div class="form-group">
+				<label for="password">Password: </label>
+				<input name="password" type="password" maxlength="10" required>
+			</div>
+			
+				
+			<div class="form-controls">
+				<input class="btn btn-default" name="Login_button" type="submit" value="Submit">
+				<input class="btn btn-default" name="cancel_button" type="reset">
+			</div>
+		</form>
+	</div>
+	
+	<footer>
+		<div class="footer">
+			<div class="footer-container">
+				<div>Created by Syntinels Team</div>
+				<div>Copyright 2018</div>
+				<div>
+					<img src="../resources/facebook.png" height="50px" width="50px">
+					<img src="../resources/twitter.png" height="50px" width="50px">
+				</div>
+			</div>
+		</div>
+	</footer>
 	
 </body>
 </html>
