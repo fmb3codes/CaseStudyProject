@@ -189,33 +189,44 @@ public class MealServices implements ServiceOperations {
 			Statement oracleStmt = con.createStatement();
 
 			// change to prepared
-			ResultSet oracleRs = oracleStmt.executeQuery("Select * from Meals where M_ID =" + ((Customer) mealToView).getID());
+			ResultSet oracleRs = oracleStmt.executeQuery("Select * from Customers where C_ID =" + ((Meal) mealToView).getID());
 			
-			System.out.println(oracleRs);
+			int num_fields = 0;
+			ResultSetMetaData meta_data;
+			
+			if (oracleRs != null) {
+				meta_data = oracleRs.getMetaData();
+				num_fields = meta_data.getColumnCount();
+				
+				String[] col_names = new String[num_fields];
+
+				
+				for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
+				    col_names[i - 1] = meta_data.getColumnName(i);
+				}	
+				
+				for (String j:col_names){
+					System.out.print("| " + j + " ");
+				}
+				
+			}
+			
 			
 			while (oracleRs.next()) {
-				//System.out.println(oracleRs.getString("first_name") + " " + oracleRs.getString(2) + " " + oracleRs.getInt("salary"));
-				//System.out.println(oracleRs.getString("*"));
+
+				String[] customer_fields = new String[num_fields];
+				//String[] col_names = new String[num_fields];
 				
-				String[] cust_fields = new String[8];
-				for (int i = 1; i <= 8; ++i) {
-				    cust_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
+				for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
+					customer_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
+				    //col_names[i - 1] = meta_data.getColumnName(i);
 				}		
 				
-				/*String[] cust_fields = new String[8];
-				for (int i = 1; i <= 8; ++i) {
-				    cust_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
-				}		
+				//System.out.println(meal_fields);
+				System.out.println();
 				
-				System.out.println(cust_fields);
-				for (String j:cust_fields){
-					System.out.println(j);
-				}*/
-				
-				System.out.println("-----Meal Information-----");
-				for (int j = 0; j < cust_fields.length; j++)
-				{
-					System.out.println(cust_fields[j]);
+				for (String j:customer_fields){
+					System.out.print("| " + j + " ");
 				}
 				
 			
@@ -226,8 +237,6 @@ public class MealServices implements ServiceOperations {
 			ex.printStackTrace();
 		}
 		
-		// check size of oracleRs return and mention if empty
-		
 		System.out.println("Query successful");
 		try {
 			site.getConnection().close();
@@ -237,6 +246,7 @@ public class MealServices implements ServiceOperations {
 		}
 	}
 	
+	// modify to print fields only if a record is found?
 	public void displayRecords() {
 		
 		DatabaseConnection site = new DatabaseConnection();
@@ -257,15 +267,15 @@ public class MealServices implements ServiceOperations {
 				meta_data = oracleRs.getMetaData();
 				num_fields = meta_data.getColumnCount();
 				
-				String[] meal_names = new String[num_fields];
+				String[] col_names = new String[num_fields];
 
 				
 				for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
-				    meal_names[i - 1] = meta_data.getColumnName(i);
+				    col_names[i - 1] = meta_data.getColumnName(i);
 				}	
 				
-				for (String j:meal_names){
-					System.out.print(j + " ");
+				for (String j:col_names){
+					System.out.print("| " + j + " ");
 				}
 				
 			}
@@ -281,18 +291,18 @@ public class MealServices implements ServiceOperations {
 				//ResultSetMetaData meta_data = oracleRs.getMetaData();
 				//int num_fields = meta_data.getColumnCount();
 				String[] meal_fields = new String[num_fields];
-				//String[] meal_names = new String[num_fields];
+				//String[] col_names = new String[num_fields];
 				
 				for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
 				    meal_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
-				    //meal_names[i - 1] = meta_data.getColumnName(i);
+				    //col_names[i - 1] = meta_data.getColumnName(i);
 				}		
 				
 				//System.out.println(meal_fields);
 				System.out.println();
 				
 				for (String j:meal_fields){
-					System.out.print(j + " ");
+					System.out.print("| " + j + " ");
 				}
 				
 			
