@@ -23,9 +23,9 @@ public class Mummy {
 			
 			orderService.setNewOrderID();
 			order.setOrder_id("1000005");
-			order.setCustomer_location("1000001");
-			order.setCustomer_id("1000001");
-			order.setOrder_status("1000001");
+			order.setCustomer_location("1000012");
+			order.setCustomer_id("1000003");
+			order.setOrder_status("1000002");
 			order.setOrder_date(today);
 			order.setDelivery_date("15-03-2018");
 			order.setOrder_on_hold(true);
