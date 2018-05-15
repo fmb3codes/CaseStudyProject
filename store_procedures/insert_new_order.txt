@@ -1,0 +1,12 @@
+create or replace PROCEDURE SP_INSERT_ORDER
+(o_date VARCHAR2, d_date VARCHAR2,
+o_o_h CHAR, t_ch CHAR, c_id CHAR, os_id CHAR, cl_id CHAR)
+AS
+BEGIN
+  INSERT INTO ORDERS
+  (O_ID, DELIVERY_DATE, ORDER_DATE , ORDER_ON_HOLD , OS_ID,
+  CL_ID, TIMES_CHANGED, C_ID)
+  VALUES
+  (SEQ_ORDERS.NEXTVAL,TO_DATE(d_date,'dd-MM-yyyy'),TO_DATE(o_date,'dd-MM-yyyy'),
+  o_o_h, os_id, cl_id, t_ch, c_id);
+END;
