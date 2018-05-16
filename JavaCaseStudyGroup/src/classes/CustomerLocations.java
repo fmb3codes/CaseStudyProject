@@ -1,146 +1,55 @@
 package classes;
+import exceptions.LocationException;
 
-public class CustomerLocations {
+public class CustomerLocations extends Locations
+{
+	private String customerID;
+	private String locationTypeID;
+	private final int MINIMUM_ID_LENGTH = 7;
 	
-	CustomerLocations cusLoc;
+	//Constructor
 	
-	
-	private String C_ID;
-	private String LT_ID;
-	private String street;
-	private String city;
-	private String state;
-	private String country;
-	private String zipcode;
 	/**
-	 * @return the cusLoc
-	 */
-	public CustomerLocations getCusLoc() {
-		return cusLoc;
-	}
-	/**
-	 * @param cusLoc the cusLoc to set
-	 */
-	public void setCusLoc(CustomerLocations cusLoc) {
-		this.cusLoc = cusLoc;
-	}
-	/**
-	 * @return the c_ID
-	 */
-	public String getC_ID() {
-		return C_ID;
-	}
-	/**
-	 * @param string the c_ID to set
-	 */
-	public void setC_ID(String string) {
-		C_ID = string;
-	}
-	/**
-	 * @return the lT_ID
-	 */
-	public String getLT_ID() {
-		return LT_ID;
-	}
-	/**
-	 * @param lT_ID the lT_ID to set
-	 */
-	public void setLT_ID(String lT_ID) {
-		LT_ID = lT_ID;
-	}
-	/**
-	 * @return the street
-	 */
-	public String getStreet() {
-		return street;
-	}
-	/**
-	 * @param street the street to set
-	 */
-	public void setStreet(String street) {
-		this.street = street;
-	}
-	/**
-	 * @return the city
-	 */
-	public String getCity() {
-		return city;
-	}
-	/**
-	 * @param city the city to set
-	 */
-	public void setCity(String city) {
-		this.city = city;
-	}
-	/**
-	 * @return the state
-	 */
-	public String getState() {
-		return state;
-	}
-	/**
-	 * @param state the state to set
-	 */
-	public void setState(String state) {
-		this.state = state;
-	}
-	/**
-	 * @return the country
-	 */
-	public String getCountry() {
-		return country;
-	}
-	/**
-	 * @param country the country to set
-	 */
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	/**
-	 * @return the zipcode
-	 */
-	public String getZipcode() {
-		return zipcode;
-	}
-	/**
-	 * @param zipcode the zipcode to set
-	 */
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
-	}
-	/**
-	 * @param cusLoc
-	 * @param c_ID
-	 * @param lT_ID
-	 * @param street
+	 * 
+	 * @param streetAddress
 	 * @param city
 	 * @param state
-	 * @param country
-	 * @param zipcode
+	 * @param zipCode
+	 * @param customerID
+	 * @param locationTypeID
+	 * @throws LocationException
 	 */
-	public CustomerLocations(CustomerLocations cusLoc, String c_ID, String lT_ID, String street, String city,
-			String state, String country, String zipcode) {
-		super();
-		this.cusLoc = cusLoc;
-		C_ID = c_ID;
-		LT_ID = lT_ID;
-		this.street = street;
-		this.city = city;
-		this.state = state;
-		this.country = country;
-		this.zipcode = zipcode;
-	}
-	public CustomerLocations() {
-		// TODO Auto-generated constructor stub
-	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "CustomerLocations [cusLoc=" + cusLoc + ", C_ID=" + C_ID + ", LT_ID=" + LT_ID + ", street=" + street
-				+ ", city=" + city + ", state=" + state + ", country=" + country + ", zipcode=" + zipcode + "]";
+	public CustomerLocations(String streetAddress, String city, String state, String zipCode, String customerID, String locationTypeID) throws LocationException  
+	{
+		super(streetAddress, city, state, zipCode);
+		this.setCustomerID(customerID);
+		this.setLocationTypeID(locationTypeID);
 	}
 	
+	//Getters
+	
+	public String getCustomerID()   {return customerID; }
+	public String getLocationType() {return locationTypeID;}
+	
+	//Setters
+
+	private void setCustomerID(String customerID) throws LocationException
+	{
+		if(customerID.isEmpty())
+			throw new LocationException("Customer ID cannot be empty");
+		else if (customerID.length() < MINIMUM_ID_LENGTH)
+			throw new LocationException("Customer ID cannot be less than " + MINIMUM_ID_LENGTH);
+		else
+			this.customerID = customerID;
+	}
+	
+	private void setLocationTypeID(String locationTypeID) throws LocationException
+	{
+		if(locationTypeID.isEmpty())
+			throw new LocationException("Location ID cannot be empty");
+		else if(locationTypeID.length() < MINIMUM_ID_LENGTH)
+			throw new LocationException("Location type cannot be less than " + MINIMUM_ID_LENGTH);
+		this.locationTypeID = locationTypeID;
+	}
 
 }
