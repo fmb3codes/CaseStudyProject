@@ -7,7 +7,7 @@ public class DatabaseConnection
 {
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static final String DB_CONNECTION = "jdbc:oracle:thin:@localhost:1521:XE";
-	private static final String DB_USER = "db_u26";
+	private static final String DB_USER = "db_u28";
 	private static final String DB_PASSWORD = "pass";
 	private Connection con;
 	private Statement oraStmt;
