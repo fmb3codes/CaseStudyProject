@@ -7,48 +7,50 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import classes.DatabaseConnection;
-import interfaces.DatabaseServices;
+import interfaces.ServiceOperations;
 
-public class CustomersCreditCardServices implements DatabaseServices 
-{
+public class OrderMealsServices implements ServiceOperations {
 
-	@Override
-	public void Create() throws SQLException, Exception {
-		// TODO Auto-generated method stub
-		
+	public OrderMealsServices() {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void Update() throws SQLException, Exception {
+	public void insertToDB(Object o) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void Delete() throws SQLException, Exception {
+	public void updateInDB(Object o) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void GetAll() throws SQLException, Exception {
+	public void deleteFromDB(Object o) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void Find() throws SQLException, Exception {
+	public void displayRecord(Object o) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void displayRecords() {
+		// TODO Auto-generated method stub
+
 	}
 	
 	public void displayForID(String custID) {
 		DatabaseConnection site = new DatabaseConnection();
 		Connection con = site.getConnection();
-		
-					
+							
 		try {
-			PreparedStatement oracleStmt = con.prepareStatement("Select CARD_TYPES.NAME as \"Card Type\", CREDIT_CARDS.NAME_ON_CARD as \"Name on card\", REPLACE(CREDIT_CARDS.CARD_NUMBER, SUBSTR(CREDIT_CARDS.CARD_NUMBER, 1, 12), '**** **** **** ') as \"Card number\" from CUSTOMERS, CARD_TYPES, CREDIT_CARDS, CUSTOMERS_CREDIT_CARDS  where CUSTOMERS.C_ID=CUSTOMERS_CREDIT_CARDS.C_ID AND CREDIT_CARDS.CT_ID=CARD_TYPES.CT_ID AND CUSTOMERS.C_ID=?");
+			PreparedStatement oracleStmt = con.prepareStatement("Select ORDERS.O_ID as \"Order ID\", MEAL_TYPES.NAME as \"Meal Type\", MEALS.NAME as \"Name of meal\", MEALS.DESCRIPTION as \"Meal description\", ORDER_MEALS.QUANTITY as \"Quantity\" from CUSTOMERS, ORDERS, ORDER_MEALS, MEALS, MEAL_TYPES where CUSTOMERS.C_ID=ORDERS.C_ID AND ORDERS.O_ID=ORDER_MEALS.O_ID AND ORDER_MEALS.M_ID=MEALS.M_ID AND MEALS.MT_ID=MEAL_TYPES.MT_ID AND CUSTOMERS.C_ID=?");
 			oracleStmt.setString(1, custID);
 			
 			

@@ -126,18 +126,18 @@ public class CustomerLocationServices implements DatabaseServices
 				
 				//ResultSetMetaData meta_data = oracleRs.getMetaData();
 				//int num_fields = meta_data.getColumnCount();
-				String[] meal_fields = new String[num_fields];
+				String[] col_fields = new String[num_fields];
 				//String[] col_names = new String[num_fields];
 				
 				for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
-				    meal_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
+				    col_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
 				    //col_names[i - 1] = meta_data.getColumnName(i);
 				}		
 				
 				//System.out.println(meal_fields);
 				System.out.println();
 				
-				for (String j:meal_fields){
+				for (String j:col_fields){
 					System.out.print("| " + j + " ");
 				}
 				
