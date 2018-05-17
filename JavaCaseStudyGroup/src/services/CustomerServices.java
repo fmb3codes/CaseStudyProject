@@ -1,4 +1,4 @@
-package classes;
+package services;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
+import classes.Customer;
+import classes.DatabaseConnection;
 import interfaces.ServiceOperations;
 
 public class CustomerServices implements ServiceOperations{
@@ -31,8 +33,12 @@ public class CustomerServices implements ServiceOperations{
 		//service.viewCustomer(testCustomer2);
 		//service.addCustomerSP(testCustomer1);
 		//service.deleteCustomerSP(testCustomer1);
-		service.displayRecord(testCustomer1);
+		//service.displayRecord(testCustomer1);
 		//service.displayRecords();
+		
+		Customer cust_info = service.customerExists("david@gmail.com", "password21");
+		
+		System.out.println(cust_info);
 		
 		
 	}
@@ -421,6 +427,57 @@ public class CustomerServices implements ServiceOperations{
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public Customer customerExists(String email, String password) {
+		DatabaseConnection site = new DatabaseConnection();
+		Connection con = site.getConnection();
+		Customer tempCust = null;
+		
+		System.out.println("Getting here");
+		
+		try {
+			PreparedStatement oracleStmt = con.prepareStatement("Select * from Customers where email = ? and password = ?");
+
+			// change to prepared
+			//PreparedStatement stmt = con.prepareStatement("Select C_ID from Customers where email = ? and password = ?");
+			oracleStmt.setString(1, email);
+			oracleStmt.setString(2,  password);
+			//oracleRs.next();
+			
+			ResultSet oracleRs;
+			oracleRs = oracleStmt.executeQuery();
+			
+			
+			while(oracleRs.next()){
+				tempCust = new Customer();
+				
+				tempCust.setID(oracleRs.getString(1));
+				tempCust.setfName(oracleRs.getString(2));
+				tempCust.setlName(oracleRs.getString(3));
+				tempCust.setPassword(oracleRs.getString(4));
+				tempCust.setLastLogin(oracleRs.getTimestamp(5));
+				tempCust.setEmail(oracleRs.getString(6));
+				tempCust.setHomeNumber(oracleRs.getInt(7));
+				tempCust.setMobileNumber(oracleRs.getInt(8));
+				
+				//custID = oracleRs.getInt(1);
+			}			
+			
+		}
+		catch (Exception ex){
+			ex.printStackTrace();
+		}
+		
+		System.out.println("Query successful");
+		try {
+			site.getConnection().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return tempCust;
 	}
 	
     private static java.sql.Timestamp getCurrentTimeStamp() {
