@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
@@ -15,6 +16,7 @@ import services.OrderServices;
 
 import exceptions.LocationException;
 import exceptions.OrderException;
+import java.io.Console;
 
 public class MainMenu 
 {
@@ -24,10 +26,13 @@ public class MainMenu
 	final static String today = fDate.format(now);
 	static Scanner input = new Scanner(System.in);
 	
+	
 	public static void main(String[] args) 
 	{
 		int menuOption;
+		Console cnsl = null;
 		
+		cnsl = System.console();
 	    do
 	    {
 	    	System.out.println("*****************************");
@@ -39,6 +44,15 @@ public class MainMenu
 	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
 	    	
+	    	try 
+	    	{
+	    		cnsl.flush();
+	    	}catch(Exception e)
+	    	{
+	    		System.out.println(e.getMessage());
+	    	}
+
+	   
 	    	System.out.print("Please select an option # ");
 	    	menuOption = input.nextInt();
 	    	
