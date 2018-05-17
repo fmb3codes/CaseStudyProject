@@ -1,4 +1,10 @@
 package classes;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
 import exceptions.LocationException;
 
 public class CustomerLocations extends Locations
@@ -51,5 +57,9 @@ public class CustomerLocations extends Locations
 			throw new LocationException("Location type cannot be less than " + MINIMUM_ID_LENGTH);
 		this.locationTypeID = locationTypeID;
 	}
+	
 
-}
+	
+	}
+
+
