@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_UPDATE_Order_STATUS(id VARCHAR2, OSname VARCHAR2)
+as
+
+Begin 
+  update order_Status Set name = OSname
+  Where  OS_ID= id;
+END;

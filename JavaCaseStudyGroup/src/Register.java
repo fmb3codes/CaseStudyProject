@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 // need to change these to correct packages
 import classes.Customer;
-import classes.CustomerServices;
+import services.CustomerServices;
 
 
 public class Register {

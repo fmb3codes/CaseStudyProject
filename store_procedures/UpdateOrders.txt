@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_UPDATE_Orders(id VARCHAR2, id2 VARCHAR2, DATE2 VARCHAR2)
+as
+
+Begin 
+  update orders Set ORDER_DATE = DATE2
+  Where  C_ID= id and O_ID = id2 ;
+END;

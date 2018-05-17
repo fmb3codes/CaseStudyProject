@@ -8,9 +8,13 @@ import java.util.List;
 
 import classes.DatabaseConnection;
 import classes.DeliveryLocations;
+<<<<<<< HEAD
+=======
+import services.MealServices;
+>>>>>>> 67e931d1ca6bcb17754454ad0cbf0d21535487a0
 import classes.Customer;
 import classes.CustomerLocations;
-import classes.CustomerServices;
+import services.CustomerServices;
 import classes.Orders;
 
 import services.CustomerLocationServices;
@@ -288,7 +292,8 @@ public class MainMenu
 		String state;
 		String zip;
 		String customerID;   //will be removed
-		String locationType; //will be removed
+		String locationType = ""; //will be removed
+		int type;
 		
 		
 		input.nextLine(); //flushes any leftover characters such as carriage return
@@ -305,11 +310,23 @@ public class MainMenu
 			zip = input.nextLine();
 			System.out.print("cusID (testing purposes): ");
 			customerID = input.nextLine();
-			System.out.print("locationType (testing purposes): ");
-			locationType = input.nextLine();
-		
+			
+			System.out.println("What type of location is it:");
+			System.out.println("1. Billing");
+			System.out.println("2. Residencial");
+			
 			try 
 			{
+				type = input.nextInt();
+				switch(type)
+				{
+					case 1:
+						locationType = "Billing";
+						break;
+					case 2:
+						locationType = "Residencial";
+						break;
+				}
 				CustomerLocations customerL = new CustomerLocations
 				(street, city, state, zip, customerID, locationType);
 				
@@ -468,6 +485,56 @@ public class MainMenu
 		creditCardService.displayForID(currentCustomer.getID());
 		
 		return 1;
+	}
+
+	public static int updateMenu()
+	{
+		int menuOption;
+
+		do
+		{
+			System.out.println("********************************");
+	    	System.out.println("What would you like to update?  ");
+	    	System.out.println("********************************");
+	    	System.out.println("*                              *");
+	    	System.out.println("* 1. Address                   *");
+	    	System.out.println("* 2. ####                      *");
+	    	System.out.println("* 3. ######                    *");
+	    	System.out.println("* 4. #######                   *");
+	    	System.out.println("* 5. Selection Menu            *");
+	    	System.out.println("*                              *");
+	    	System.out.println("*****************************");
+	    	
+			System.out.print("Please select an option # ");
+			menuOption = input.nextInt();
+			
+			switch(menuOption)
+			{
+				case 1:
+					updateAddress();
+					break;
+				case 2:
+					
+					break;
+				case 3:
+					
+					break;
+				case 4:
+	
+					break;
+				case 5:
+					return 1;
+				default:
+					System.out.println("Please enter 1 or 2");
+					break;
+			}
+			
+		}while(true);
+	}
+	
+	public static void updateAddress()
+	{
+		
 	}
 	
 	public static DatabaseConnection getConnected()

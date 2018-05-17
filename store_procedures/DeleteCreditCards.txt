@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_DEL_CC(id VArchar2 )
+AS
+
+Begin
+  delete from credit_cards where CC_ID = id;
+ 
+ END;

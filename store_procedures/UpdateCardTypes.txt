@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_UPDATE_CARDS_TYPES(id VARCHAR2, CTname VARCHAR2)
+as
+
+Begin 
+  update card_types Set name = CTname
+  Where  CT_ID= id;
+END;

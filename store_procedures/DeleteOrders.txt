@@ -1,0 +1,6 @@
+create or replace procedure SP_DEL_NEW_Order(id varchar2)
+as
+
+Begin
+ delete from orders  where O_ID = id;
+END;
