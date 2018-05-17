@@ -105,7 +105,7 @@ public class MainMenu
 					
 					break;
 				case 3:
-					
+					updateMenu();
 					break;
 				case 4:
 	
