@@ -2,10 +2,12 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import exceptions.OrdersExceptionHandling;
+import exceptions.OrderException;
+
+import services.OrderServices;
 import classes.DatabaseConnection;
 import classes.Orders;
-import classes.OrdersServices;
+
 
 public class Mummy {
 
@@ -16,12 +18,11 @@ public class Mummy {
 	    
 		DatabaseConnection db = new DatabaseConnection();
 		Orders order = new Orders();
-		OrdersServices orderService = new OrdersServices(db);
+		
 		
 		try
 		{
-			
-			orderService.setNewOrderID();
+			OrderServices orderService = new OrderServices(db, order);
 			order.setOrder_id("1000005");
 			order.setCustomer_location("1000012");
 			order.setCustomer_id("1000003");
@@ -31,9 +32,9 @@ public class Mummy {
 			order.setOrder_on_hold(true);
 			order.setTimes_changes(0);
 			
-			orderService.addNewOrder(order);
+			//args.orderService.addNewOrder(order);
 			//orderService.deleteOrder(order);
-			orderService.getAllOrders();
+			//orderService.getAllOrders();
 			//orderService.getSpecificOrder(order);
 			
 			db.getConnection().close();
@@ -43,7 +44,7 @@ public class Mummy {
 		{
 			System.out.println(e.getMessage());
 		}
-		catch(OrdersExceptionHandling e)
+		catch(OrderException e)
 		{
 			System.out.println(e.getMessage());
 		}
