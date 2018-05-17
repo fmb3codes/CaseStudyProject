@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_INS_NEW_MT (MealName varchar2)
+as
+
+Begin 
+  insert into MEAL_TYPES(MT_ID, NAME)
+  values(SEQ_MEAL_TYPES.NEXTVAL, MealName);
+END;

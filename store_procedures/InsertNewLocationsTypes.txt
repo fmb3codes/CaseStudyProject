@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_INS_NEW_LT (LocationName varchar2)
+as
+
+Begin 
+  insert into Locations_Types(LT_ID, LOCATION_NAME)
+  values(SEQ_LOC_TYPES.NEXTVAL, LocationName);
+END;

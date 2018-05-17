@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_INS_NEW_CT( oNAME VARCHAR)
+AS
+
+Begin
+  insert into Card_types(CT_ID, NAME)
+  values(SEQ_CARD_TYPES.NEXTVAL, oNAME);
+END;

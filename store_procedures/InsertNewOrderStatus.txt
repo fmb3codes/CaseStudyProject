@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_INS_NEW_OS (OrderName varchar2)
+as
+
+Begin 
+  insert into Order_status(OS_ID, NAME)
+  values(SEQ_ORDER_STAT.NEXTVAL, OrderName);
+END;
