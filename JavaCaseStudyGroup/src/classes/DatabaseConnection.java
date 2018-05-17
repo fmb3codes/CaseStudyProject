@@ -1,6 +1,4 @@
 package classes;
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -14,16 +12,8 @@ public class DatabaseConnection
 	private Connection con;
 	private Statement oraStmt;
 	
-	public Connection getConnection()
-	{
-		return con;
-	}
-	
-	public Statement getStatement()
-	{
-		return oraStmt;
-	}
-	
+	public Connection getConnection() {return con;}
+	public Statement getStatement() {return oraStmt;}
 	
 	public DatabaseConnection()
 	{
