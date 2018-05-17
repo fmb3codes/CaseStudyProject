@@ -45,15 +45,25 @@ public class CustomerServices implements ServiceOperations{
 		
 	}
 	
-	public void addCustomerSP(Customer customerToAdd) {
-		String ID = customerToAdd.getID();
-		String fName = customerToAdd.getfName();
-		String lName = customerToAdd.getlName();
-		String email = customerToAdd.getEmail();
-		String password = customerToAdd.getPassword();
-	    Timestamp lastLogin = customerToAdd.getLastLogin();
-	    int mobileNumber = customerToAdd.getMobileNumber();
-	    int homeNumber = customerToAdd.getHomeNumber();
+	public String findNextCustomerId() throws SQLException, Exception
+	{
+		DatabaseConnection site = new DatabaseConnection();
+		
+		ResultSet oraResult = site.getStatement().executeQuery("SELECT SEQ_CUSTOMERS.nextval id FROM dual");
+		oraResult.next();
+		return oraResult.getString("id");
+	}
+	
+	
+	public void insertToDB(Object customerToAdd) { // uses stored procedure
+		//String ID = customerToAdd.getID();
+		String fName = ((Customer) customerToAdd).getfName();
+		String lName = ((Customer) customerToAdd).getlName();
+		String email = ((Customer) customerToAdd).getEmail();
+		String password = ((Customer) customerToAdd).getPassword();
+	    Timestamp lastLogin = ((Customer) customerToAdd).getLastLogin();
+	    int mobileNumber = ((Customer) customerToAdd).getMobileNumber();
+	    int homeNumber = ((Customer) customerToAdd).getHomeNumber();
 		
 		DatabaseConnection site = new DatabaseConnection();
 		Connection con = site.getConnection();
@@ -61,16 +71,16 @@ public class CustomerServices implements ServiceOperations{
 		CallableStatement oracleCallableStmt;
 		
 		try {
-			oracleCallableStmt = con.prepareCall("{call SP_INS_CUST(?,?,?,?,?,?,?,?)}");
+			oracleCallableStmt = con.prepareCall("{call SP_INS_CUST(?,?,?,?,?,?,?)}");
 			
-			oracleCallableStmt.setString(1,  ID);
-			oracleCallableStmt.setString(2,  fName);
-			oracleCallableStmt.setString(3,  lName);
-			oracleCallableStmt.setString(4,  password);
-			oracleCallableStmt.setTimestamp(5,  lastLogin);
-			oracleCallableStmt.setString(6,  email);
-			oracleCallableStmt.setInt(7,  homeNumber);
-			oracleCallableStmt.setInt(8,  mobileNumber);
+			//oracleCallableStmt.setString(1,  ID);
+			oracleCallableStmt.setString(1,  fName);
+			oracleCallableStmt.setString(2,  lName);
+			oracleCallableStmt.setString(3,  password);
+			oracleCallableStmt.setTimestamp(4,  lastLogin);
+			oracleCallableStmt.setString(5,  email);
+			oracleCallableStmt.setInt(6,  homeNumber);
+			oracleCallableStmt.setInt(7,  mobileNumber);
 			
 			oracleCallableStmt.execute();
 			oracleCallableStmt.close();
@@ -91,8 +101,9 @@ public class CustomerServices implements ServiceOperations{
 		
 	}
 	
+	/*
 	@Override
-	public void insertToDB(Object customerToAdd) {
+	public void insertToDB(Object customerToAdd) { // non-SP way to insert customer
 		String ID = ((Customer) customerToAdd).getID();
 		String fName = ((Customer) customerToAdd).getfName();
 		String lName = ((Customer) customerToAdd).getlName();
@@ -142,7 +153,7 @@ public class CustomerServices implements ServiceOperations{
 			e.printStackTrace();
 		}
 		
-	}
+	}*/
 	
 	public void updateInDB(Object customerToUpdate) {
 		// do null check on input
@@ -361,7 +372,7 @@ public class CustomerServices implements ServiceOperations{
 				    col_names[i - 1] = meta_data.getColumnName(i);
 				}	
 				
-				for (String j:col_names){
+				for (String j:col_names){ // can just iterate up to column count, don't need to store names
 					System.out.print(j + " ");
 				}
 				

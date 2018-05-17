@@ -42,6 +42,15 @@ public class MealServices implements ServiceOperations {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public String findNextMealId() throws SQLException, Exception
+	{
+		DatabaseConnection site = new DatabaseConnection();
+		
+		ResultSet oraResult = site.getStatement().executeQuery("SELECT SEQ_MEALS.nextval id FROM dual");
+		oraResult.next();
+		return oraResult.getString("id");
+	}
+	
 	public void insertToDB(Object mealToAdd) { // stored procedure
 		String ID = ((Meal) mealToAdd).getID();
 		String description = ((Meal) mealToAdd).getDescription();
@@ -58,15 +67,15 @@ public class MealServices implements ServiceOperations {
 		
 		
 		try {
-			oracleCallableStmt = con.prepareCall("{call SP_INS_MEAL(?,?,?,?,?,?,?)}");
+			oracleCallableStmt = con.prepareCall("{call SP_INS_MEAL(?,?,?,?,?,?)}");
 			
-			oracleCallableStmt.setString(1,  ID);
-			oracleCallableStmt.setString(2,  description);
-			oracleCallableStmt.setString(3,  name);
-			oracleCallableStmt.setDouble(4,  price);
-			oracleCallableStmt.setString(5,  imagePath);
-			oracleCallableStmt.setString(6,  mealOfDay);
-			oracleCallableStmt.setString(7,  MT_ID);
+			//oracleCallableStmt.setString(1,  ID);
+			oracleCallableStmt.setString(1,  description);
+			oracleCallableStmt.setString(2,  name);
+			oracleCallableStmt.setDouble(3,  price);
+			oracleCallableStmt.setString(4,  imagePath);
+			oracleCallableStmt.setString(5,  mealOfDay);
+			oracleCallableStmt.setString(6,  MT_ID);
 			
 			System.out.println("About to call stored procedure");
 			oracleCallableStmt.execute();
@@ -274,6 +283,7 @@ public class MealServices implements ServiceOperations {
 				    col_names[i - 1] = meta_data.getColumnName(i);
 				}	
 				
+				// add if statement to only print if a record was found
 				for (String j:col_names){
 					System.out.print("| " + j + " ");
 				}

@@ -167,10 +167,17 @@ public class Customer {
 
 
 
-	@Override
+	@Override // update this
 	public String toString() {
 		return "Customer [ID=" + ID + ", fName=" + fName + ", lName=" + lName + ", email=" + email + ", password="
 				+ password + "]";
 	}
+	
+    public static java.sql.Timestamp getCurrentTimeStamp() {
+
+	java.util.Date today = new java.util.Date();
+	return new java.sql.Timestamp(today.getTime());
+
+}
 	
 }
