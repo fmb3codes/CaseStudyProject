@@ -1,4 +1,4 @@
-package classes;
+package services;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
+import classes.Customer;
+import classes.DatabaseConnection;
 import interfaces.ServiceOperations;
 
 public class CustomerServices implements ServiceOperations{
