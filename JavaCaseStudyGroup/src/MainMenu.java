@@ -239,12 +239,12 @@ public class MainMenu
 		do
 		{
 			System.out.println("*****************************");
-	    	System.out.println("What would you to view?       ");
+	    	System.out.println("What would you like to view? ");
 	    	System.out.println("*****************************");
 	    	System.out.println("*                           *");
 	    	System.out.println("* 1. Meals                  *");
-	    	System.out.println("* 2. ####                   *");
-	    	System.out.println("* 3. ######                 *");
+	    	System.out.println("* 2. Orders                 *");
+	    	System.out.println("* 3. Locations              *");
 	    	System.out.println("* 4. #######                *");
 	    	System.out.println("* 5. Selection Menu         *");
 	    	System.out.println("*                           *");
@@ -259,10 +259,10 @@ public class MainMenu
 					viewMeals();
 					break;
 				case 2:
-					
+					viewOrders(); // this will include option to view order details, so might need separate function to just display orders
 					break;
 				case 3:
-					
+					viewLocations();
 					break;
 				case 4:
 	
@@ -390,12 +390,70 @@ public class MainMenu
 		
 	}
 	
-	public static void viewMeals() 
+	public static int viewMeals() 
 	{
 		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
 		// not doing this in displayRecords since admins may call same function and the message might be different
 		MealServices mealService = new MealServices();
 		mealService.displayRecords();
+		
+		return 1;
+	}
+	
+	public static int viewOrders() 
+	{
+		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
+		// not doing this in displayRecords since admins may call same function and the message might be different
+		OrderServices orderService  = new OrderServices(); 
+		
+		int menuOption;
+
+		do
+		{
+			orderService.displayForID(currentCustomer.getID());
+			System.out.println("*****************************");
+	    	System.out.println("What would you like to do?   ");
+	    	System.out.println("*****************************");
+	    	System.out.println("* 1. Order Details          *");
+	    	System.out.println("* 2. View Menu              *");
+	    	System.out.println("*****************************");
+	    	
+			System.out.print("Please select an option # ");
+			menuOption = input.nextInt();
+			
+			switch(menuOption)
+			{
+				case 1:
+					// view order details
+					break;
+				case 2:
+					return 1;
+				default:
+					System.out.println("Please enter 1 or 2");
+					break;
+			}
+			
+		}while(true);
+
+	}
+	
+	public static int viewLocations() 
+	{
+		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
+		// not doing this in displayRecords since admins may call same function and the message might be different
+		CustomerLocationServices custLocService = new CustomerLocationServices();
+		custLocService.displayForID(currentCustomer.getID());
+		
+		return 1;
+	}
+	
+	public static int viewOrderDetails() 
+	{
+		
+		
+		
+		return 1;
+		
 	}
 	
 	public static DatabaseConnection getConnected()
