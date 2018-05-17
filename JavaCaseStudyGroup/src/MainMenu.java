@@ -170,7 +170,7 @@ public class MainMenu
 					viewMenu();
 					break;
 				case 3:
-					
+					updateMenu();
 					break;
 				case 4:
 	
