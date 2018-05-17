@@ -1,0 +1,9 @@
+CREATE OR REPLACE PROCEDURE SP_INS_NEW_PT (PaymentName varchar2)
+as
+
+Begin 
+  insert into PAYMENT_TYPES(PT_ID, PAYMENT_NAME)
+  values(SEQ_PAY_TYPES.nextval, PaymentName);
+     End;
+  
+END ;
