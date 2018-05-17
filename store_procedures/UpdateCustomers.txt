@@ -1,0 +1,42 @@
+CREATE OR REPLACE PROCEDURE SP_UPDATE_CUS_FIRST (id varchar2 , FirstName VARCHAR2)
+as
+
+Begin 
+  update Customers Set FIRST_NAME = FirstName 
+  Where  C_ID= id;
+END;
+
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_CUS_LAST (id varchar2 , LastName VARCHAR2)
+as
+
+Begin 
+  update Customers Set LAST_NAME = LastName 
+  Where  C_ID= id;
+END;
+
+create or replace PROCEDURE SP_UPDATE_CUS_HM (id varchar2 , HNUM VARCHAR2)
+as
+
+Begin 
+  update Customers Set HOME_NUMBER = HNUM 
+  Where  C_ID= id;
+END;
+
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_CUS_PW (id varchar2 , PW VARCHAR2)
+as
+
+Begin 
+  update Customers Set PASSWORD = PW 
+  Where  C_ID= id;
+END;
+
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_CUS_MPHONE (id varchar2 , MPHONE VARCHAR2)
+as
+
+Begin 
+  update Customers Set MOBILE_NUMBER = MPHONE 
+  Where  C_ID= id;
+END;

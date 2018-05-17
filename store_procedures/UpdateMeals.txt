@@ -1,0 +1,39 @@
+CREATE OR REPLACE PROCEDURE SP_UPDATE_MEALS(id VARCHAR2, id2 VARCHAR2, Price2 VARCHAR2)
+as
+
+Begin 
+  update meals Set PRICE = Price2
+  Where  MT_ID= id and M_ID = id2 ;
+END;
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_MEALS_Desc(id VARCHAR2, id2 VARCHAR2, desc2 VARCHAR2)
+as
+
+Begin 
+  update meals Set DESCRIPTION = desc2
+  Where  MT_ID= id and M_ID = id2 ;
+END;
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_MEALS_Name(id VARCHAR2, id2 VARCHAR2, name2 VARCHAR2)
+as
+
+Begin 
+  update meals Set name = name2
+  Where  MT_ID= id and M_ID = id2 ;
+END;
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_MEALS_MDAY(id VARCHAR2, id2 VARCHAR2, MEAL_OF_DAY2 VARCHAR2)
+as
+
+Begin 
+  update meals Set MEAL_OF_DAY = MEAL_OF_DAY2
+  Where  MT_ID= id and M_ID = id2 ;
+END;
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_MEALS_IMAGE(id VARCHAR2, id2 VARCHAR2, IMAGE_PATH2 VARCHAR2)
+as
+
+Begin 
+  update meals Set IMAGE_PATH = IMAGE_PATH2
+  Where  MT_ID= id and M_ID = id2 ;
+END;

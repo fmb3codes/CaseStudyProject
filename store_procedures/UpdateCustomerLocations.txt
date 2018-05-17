@@ -1,0 +1,31 @@
+CREATE OR REPLACE PROCEDURE SP_UPDATE_CUS_LOC_Street (cusid VARCHAR2, id varchar2 , Street VARCHAR2)
+as
+
+Begin 
+  update Customers_locations Set STREET_ADDRESS = Street
+  Where  CL_ID= id and c_id = cusid;
+END;
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_CUS_LOC_City(cusid VARCHAR2, id varchar2 , CITY1 VARCHAR2)
+as
+
+Begin 
+  update Customers_locations Set CITY = CITY1
+  Where  CL_ID= id and c_id = cusid;
+END;
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_CUS_LOC_state(cusid VARCHAR2, id varchar2 , state1 VARCHAR2)
+as
+
+Begin 
+  update Customers_locations Set STATE = state1
+  Where  CL_ID= id and c_id = cusid;
+END;
+
+CREATE OR REPLACE PROCEDURE SP_UPDATE_CUS_LOC_ZIP(cusid VARCHAR2, id varchar2 , Zip VARCHAR2)
+as
+
+Begin 
+  update Customers_locations Set ZIP_CODE = Zip
+  Where  CL_ID= id and c_id = cusid;
+END;
