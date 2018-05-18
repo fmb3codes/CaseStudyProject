@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_UPDATE_Payments_Types(id VARCHAR2, Pname VARCHAR2)
+as
+
+Begin 
+  update payment_types Set PAYMENT_NAME = Pname
+  Where  PT_ID= id;
+END;

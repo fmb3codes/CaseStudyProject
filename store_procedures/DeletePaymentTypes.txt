@@ -1,0 +1,6 @@
+create or replace procedure SP_DEL_NEW_PT(id in varchar2)
+as 
+
+Begin
+ delete from Payment_Types where PT_ID = id;
+END;

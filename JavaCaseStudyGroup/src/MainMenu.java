@@ -13,16 +13,26 @@ import java.util.Map;
 
 import classes.DatabaseConnection;
 import classes.DeliveryLocations;
+
 import classes.Locations;
+
 import services.MealServices;
+
 import classes.Customer;
 import classes.CustomerLocations;
 import services.CustomerServices;
 import classes.Orders;
 
 import services.CustomerLocationServices;
+import services.CustomersCreditCardServices;
 import services.DeliveryServices;
+
 import services.LocationTypeServices;
+
+import services.MealServices;
+import services.MealTypeServices;
+import services.OrderMealsServices;
+
 import services.OrderServices;
 
 import exceptions.LocationException;
@@ -166,7 +176,7 @@ public class MainMenu
 					viewMenu();
 					break;
 				case 3:
-					updateMenu();
+					//updateMenu();
 					break;
 				case 4:
 	
@@ -241,7 +251,7 @@ public class MainMenu
 	    	System.out.println("* 1. Meals                  *");
 	    	System.out.println("* 2. Orders                 *");
 	    	System.out.println("* 3. Locations              *");
-	    	System.out.println("* 4. #######                *");
+	    	System.out.println("* 4. Credit cards           *");
 	    	System.out.println("* 5. Selection Menu         *");
 	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
@@ -261,7 +271,7 @@ public class MainMenu
 					viewLocations();
 					break;
 				case 4:
-	
+					viewCreditCards();
 					break;
 				case 5:
 					return 1;
@@ -441,7 +451,7 @@ public class MainMenu
 			switch(menuOption)
 			{
 				case 1:
-					// view order details
+					viewOrderDetails();
 					break;
 				case 2:
 					return 1;
@@ -467,12 +477,23 @@ public class MainMenu
 	public static int viewOrderDetails() 
 	{
 		
-		
+		OrderMealsServices orderMealsService = new OrderMealsServices();
+		orderMealsService.displayForID(currentCustomer.getID());
 		
 		return 1;
 		
 	}
 	
+	public static int viewCreditCards() 
+	{
+		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
+		// not doing this in displayRecords since admins may call same function and the message might be different
+		CustomersCreditCardServices creditCardService = new CustomersCreditCardServices();
+		creditCardService.displayForID(currentCustomer.getID());
+		
+		return 1;
+	}
+
 	public static int updateMenu()
 	{
 		int menuOption;

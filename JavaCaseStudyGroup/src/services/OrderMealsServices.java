@@ -1,94 +1,56 @@
 package services;
 
-import classes.CustomerLocations;
-import classes.DatabaseConnection;
-import interfaces.DatabaseServices;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-public class CustomerLocationServices implements DatabaseServices
-{
-	private static DatabaseConnection db_connection;
-	private CustomerLocations customerLocation;
-	
-	//Constructor
-	
-	public CustomerLocationServices()
-	{
-		
-	}
-	
-	public CustomerLocationServices(DatabaseConnection db, CustomerLocations customerLocation)
-	{
-		this.setDatabaseConnection(db);
-		this.setCustomerLocation(customerLocation);
-	}
-	
-	//Setters
-	
-	private void setDatabaseConnection(DatabaseConnection db) {this.db_connection = db;}
-	private void setCustomerLocation(CustomerLocations cl) 	  {this.customerLocation = cl;}
-	
-	
-	//DatabaseService Interface Methods
+import classes.DatabaseConnection;
+import interfaces.ServiceOperations;
 
-	@Override
-	public void Create() throws SQLException, Exception
-	{
-		CallableStatement oraCallStmt = this.db_connection
-				.getConnection()
-				.prepareCall("{call SP_INSERT_NEW_CL(?,?,?,?,?,?)}");
-		oraCallStmt.setString(1, this.customerLocation.getLocationType());
-		oraCallStmt.setString(2, this.customerLocation.getStreetAddress());
-		oraCallStmt.setString(3, this.customerLocation.getCity());
-		oraCallStmt.setString(4, this.customerLocation.getState());
-		oraCallStmt.setString(5, this.customerLocation.getZipCode());
-		oraCallStmt.setString(6, this.customerLocation.getCustomerID());
-		oraCallStmt.execute();
-		System.out.println("Procedure Executed");
-		System.out.println("A new customer location has been succesfully added");
+public class OrderMealsServices implements ServiceOperations {
+
+	public OrderMealsServices() {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void Update() throws SQLException, Exception
-	{
+	public void insertToDB(Object o) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void Delete() throws SQLException, Exception
-	{
+	public void updateInDB(Object o) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void GetAll() throws SQLException, Exception
-	{
-		
-		
-		
+	public void deleteFromDB(Object o) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
-	public void Find() throws SQLException, Exception
-	{	
-		
-		
+	public void displayRecord(Object o) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void displayRecords() {
+		// TODO Auto-generated method stub
+
 	}
 	
 	public void displayForID(String custID) {
 		DatabaseConnection site = new DatabaseConnection();
 		Connection con = site.getConnection();
-		
-					
+							
 		try {
-			PreparedStatement oracleStmt = con.prepareStatement("Select LOCATION_NAME as \"Location Type\", STREET_ADDRESS as \"Address\", CITY as \"City\", STATE as \"State\", ZIP_CODE as \"Zip Code\" from CUSTOMERS, CUSTOMERS_LOCATIONS, LOCATIONS_TYPES  where CUSTOMERS.C_ID=CUSTOMERS_LOCATIONS.C_ID AND CUSTOMERS_LOCATIONS.LT_ID=LOCATIONS_TYPES.LT_ID AND CUSTOMERS.C_ID=?");
+			PreparedStatement oracleStmt = con.prepareStatement("Select ORDERS.O_ID as \"Order ID\", MEAL_TYPES.NAME as \"Meal Type\", MEALS.NAME as \"Name of meal\", MEALS.DESCRIPTION as \"Meal description\", ORDER_MEALS.QUANTITY as \"Quantity\" from CUSTOMERS, ORDERS, ORDER_MEALS, MEALS, MEAL_TYPES where CUSTOMERS.C_ID=ORDERS.C_ID AND ORDERS.O_ID=ORDER_MEALS.O_ID AND ORDER_MEALS.M_ID=MEALS.M_ID AND MEALS.MT_ID=MEAL_TYPES.MT_ID AND CUSTOMERS.C_ID=?");
 			oracleStmt.setString(1, custID);
 			
 			
@@ -161,5 +123,5 @@ public class CustomerLocationServices implements DatabaseServices
 		}
 		
 	}
-	
+
 }

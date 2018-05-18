@@ -429,6 +429,8 @@ public class CustomerServices implements ServiceOperations{
 		
 	}
 	
+	
+	// may need to capitalize/force lower/upper for comparison?
 	public Customer customerExists(String email, String password) {
 		DatabaseConnection site = new DatabaseConnection();
 		Connection con = site.getConnection();

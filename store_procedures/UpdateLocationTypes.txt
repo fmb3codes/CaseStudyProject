@@ -1,0 +1,7 @@
+CREATE OR REPLACE PROCEDURE SP_UPDATE_Locations_TYPES(id VARCHAR2, LTname VARCHAR2)
+as
+
+Begin 
+  update locations_types Set LOCATION_NAME = LTname
+  Where  LT_ID= id;
+END;

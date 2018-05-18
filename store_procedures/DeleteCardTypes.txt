@@ -1,0 +1,7 @@
+
+Create or replace procedure SP_DEL_NEW_CT(id IN VARCHAR2 )
+AS
+
+Begin
+ delete from CARD_TYPES where CT_ID = id;
+END;
