@@ -31,7 +31,7 @@ import services.LocationTypeServices;
 
 import services.MealServices;
 import services.MealTypeServices;
-import services.OrderMealsServices;
+//import services.OrderMealsServices;
 
 import services.OrderServices;
 
@@ -477,8 +477,8 @@ public class MainMenu
 	public static int viewOrderDetails() 
 	{
 		
-		OrderMealsServices orderMealsService = new OrderMealsServices();
-		orderMealsService.displayForID(currentCustomer.getID());
+		//OrderMealsServices orderMealsService = new OrderMealsServices();
+		//orderMealsService.displayForID(currentCustomer.getID());
 		
 		return 1;
 		
@@ -489,7 +489,7 @@ public class MainMenu
 		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
 		// not doing this in displayRecords since admins may call same function and the message might be different
 		CustomersCreditCardServices creditCardService = new CustomersCreditCardServices();
-		creditCardService.displayForID(currentCustomer.getID());
+		//creditCardService.displayForID(currentCustomer.getID());
 		
 		return 1;
 	}
