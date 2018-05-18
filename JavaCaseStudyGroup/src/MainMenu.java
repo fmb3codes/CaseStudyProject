@@ -1,13 +1,23 @@
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.Set;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import classes.DatabaseConnection;
 import classes.DeliveryLocations;
+
+import classes.Locations;
+
+import services.MealServices;
+
 import classes.Customer;
 import classes.CustomerLocations;
 import services.CustomerServices;
@@ -16,9 +26,13 @@ import classes.Orders;
 import services.CustomerLocationServices;
 import services.CustomersCreditCardServices;
 import services.DeliveryServices;
+
+import services.LocationTypeServices;
+
 import services.MealServices;
 import services.MealTypeServices;
-import services.OrderMealsServices;
+//import services.OrderMealsServices;
+
 import services.OrderServices;
 
 import exceptions.LocationException;
@@ -39,11 +53,13 @@ public class MainMenu
 	public static void main(String[] args) 
 	{
 		int menuOption;
+
 		Console cnsl = null;
 		
 		// double check; login stopped working
 		
 		cnsl = System.console();
+
 	    do
 	    {
 	    	System.out.println("*****************************");
@@ -54,6 +70,7 @@ public class MainMenu
 	    	System.out.println("* 2. Register               *");
 	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
+
 	    	
 	    	try 
 	    	{
@@ -65,6 +82,7 @@ public class MainMenu
 
 	    	
 	    	// need to handle input mismatch exception is user enters string/etc.
+
 	   
 	    	System.out.print("Please select an option # ");
 	    	menuOption = input.nextInt();
@@ -291,51 +309,55 @@ public class MainMenu
 	
 	public static void addNewAddress() 
 	{
-		String street;
-		String city;
-		String state;
-		String zip;
-		String customerID;   //will be removed
-		String locationType = ""; //will be removed
-		int type;
-		
-		
+
+		ArrayList<String> ids = new ArrayList<String>();
+		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		int locOp = 0;
+
+		int selected;
 		input.nextLine(); //flushes any leftover characters such as carriage return
+		
 		do
 		{
-			
-			System.out.print("Please enter your street address: ");
-			street = input.nextLine();
-			System.out.print("Please enter your city: ");
-			city = input.nextLine();
-			System.out.print("Please enter your state: ");
-			state = input.nextLine();
-			System.out.print("Please enter your zip code: ");
-			zip = input.nextLine();
-			System.out.print("cusID (testing purposes): ");
-			customerID = input.nextLine();
-			
-			System.out.println("What type of location is it:");
-			System.out.println("1. Billing");
-			System.out.println("2. Residencial");
-			
 			try 
 			{
-				type = input.nextInt();
-				switch(type)
+				CustomerLocations cl = new CustomerLocations();
+				LocationTypeServices ls = new LocationTypeServices(getConnected());
+				
+				System.out.print("Please enter your street address:");
+				cl.setStreetAdress(input.nextLine());
+				System.out.print("Please enter your city:");
+				cl.setCity(input.nextLine());
+				System.out.print("Please enter your state:");
+				cl.setState(input.nextLine());
+				System.out.print("Please enter your zip code:");
+				cl.setZipCode(input.nextLine());
+		
+				ids = ls.getAllLocationTypeID();
+				names = ls.getAllLocationTypeName();
+				
+				System.out.println("What type of location is it:");
+				for(String name : names)
 				{
-					case 1:
-						locationType = "Billing";
-						break;
-					case 2:
-						locationType = "Residencial";
-						break;
+					locOp++;
+					System.out.println(locOp + ". " + name);
+					selection.add(locOp);
 				}
-				CustomerLocations customerL = new CustomerLocations
-				(street, city, state, zip, customerID, locationType);
+				
+				do
+				{
+					System.out.print("Please select type: ");
+					selected = input.nextInt();
+					
+				}while(!selection.contains((selected)));
+			
+				cl.setLocationTypeID(ids.get((selected - 1)));
+				cl.setCustomerID(currentCustomer.getID());
 				
 				CustomerLocationServices cls = new CustomerLocationServices
-				(getConnected(), customerL);
+				(getConnected(), cl);
+				
 				cls.Create();
 				
 			}catch (LocationException | SQLException e) 
@@ -345,6 +367,10 @@ public class MainMenu
 			{
 				System.out.println(e.getMessage());
 			}
+			
+			input.nextLine(); //flushes any leftover characters such as carriage return
+			System.out.println("Would you like to add another address");
+			input.nextLine();
 			
 		}while(true);	
 	}
@@ -475,8 +501,8 @@ public class MainMenu
 	public static int viewOrderDetails() 
 	{
 		
-		OrderMealsServices orderMealsService = new OrderMealsServices();
-		orderMealsService.displayForID(currentCustomer.getID());
+		//OrderMealsServices orderMealsService = new OrderMealsServices();
+		//orderMealsService.displayForID(currentCustomer.getID());
 		
 		
 		// do cls here or outside?
@@ -489,7 +515,7 @@ public class MainMenu
 		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
 		// not doing this in displayRecords since admins may call same function and the message might be different
 		CustomersCreditCardServices creditCardService = new CustomersCreditCardServices();
-		creditCardService.displayForID(currentCustomer.getID());
+		//creditCardService.displayForID(currentCustomer.getID());
 		
 		return 1;
 	}
