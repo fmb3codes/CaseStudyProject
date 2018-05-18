@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class CustomerLocationServices implements DatabaseServices
 {
-	private DatabaseConnection db_connection;
+	private static DatabaseConnection db_connection;
 	private CustomerLocations customerLocation;
 	
 	//Constructor
@@ -70,14 +70,15 @@ public class CustomerLocationServices implements DatabaseServices
 	@Override
 	public void GetAll() throws SQLException, Exception
 	{
-		// TODO Auto-generated method stub
+		
+		
 		
 	}
 
 	@Override
 	public void Find() throws SQLException, Exception
-	{
-		// TODO Auto-generated method stub
+	{	
+		
 		
 	}
 	

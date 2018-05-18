@@ -13,7 +13,12 @@ public class CustomerLocations extends Locations
 	private String locationTypeID;
 	private final int MINIMUM_ID_LENGTH = 7;
 	
-	//Constructor
+	//Constructors
+	
+	public CustomerLocations() 
+	{
+		super("", "", "", "");
+	}
 	
 	/**
 	 * 
@@ -33,13 +38,13 @@ public class CustomerLocations extends Locations
 	}
 	
 	//Getters
-	
+
 	public String getCustomerID()   {return customerID; }
 	public String getLocationType() {return locationTypeID;}
 	
 	//Setters
 
-	private void setCustomerID(String customerID) throws LocationException
+	public void setCustomerID(String customerID) throws LocationException
 	{
 		if(customerID.isEmpty())
 			throw new LocationException("Customer ID cannot be empty");
@@ -49,7 +54,7 @@ public class CustomerLocations extends Locations
 			this.customerID = customerID;
 	}
 	
-	private void setLocationTypeID(String locationTypeID) throws LocationException
+	public void setLocationTypeID(String locationTypeID) throws LocationException
 	{
 		if(locationTypeID.isEmpty())
 			throw new LocationException("Location ID cannot be empty");

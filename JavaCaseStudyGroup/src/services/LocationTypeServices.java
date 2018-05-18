@@ -1,10 +1,12 @@
 package services;
 
+
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 
 import classes.DatabaseConnection;
-import classes.LocationTypes;
-import classes.Orders;
 import interfaces.DatabaseServices;
 
 public class LocationTypeServices implements DatabaseServices
@@ -14,7 +16,7 @@ public class LocationTypeServices implements DatabaseServices
 	
 	//Constructor
 	
-	public LocationTypeServices(DatabaseConnection db, String name)
+	public LocationTypeServices(DatabaseConnection db)
 	{
 		this.setDatabaseConnection(db);
 		this.setName(name);
@@ -53,12 +55,40 @@ public class LocationTypeServices implements DatabaseServices
 		
 		
 	}
-
+	
 	@Override
 	public void Find() throws SQLException, Exception
 	{
 		
 		
+	}
+	
+	public ArrayList<String> getAllLocationTypeID() throws SQLException, Exception 
+	{
+		ArrayList<String> ids = new ArrayList<String>();
+
+		ResultSet oraResult = db_connection
+				.getStatement()
+				.executeQuery("SELECT LT_ID FROM LOCATIONS_TYPES");
+		
+		while(oraResult.next())
+			ids.add(oraResult.getString("LT_ID"));
+		
+		return ids;
+	}
+	
+	public ArrayList<String> getAllLocationTypeName() throws SQLException, Exception 
+	{
+		ArrayList<String> names = new ArrayList<String>();
+	
+		ResultSet oraResult = db_connection
+				.getStatement()
+				.executeQuery("SELECT LOCATION_NAME FROM LOCATIONS_TYPES");
+		
+		while(oraResult.next())
+			names.add(oraResult.getString("LOCATION_NAME"));
+			
+		return names;
 	}
 	
 	
