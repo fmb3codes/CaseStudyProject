@@ -8,10 +8,6 @@ import java.util.List;
 
 import classes.DatabaseConnection;
 import classes.DeliveryLocations;
-<<<<<<< HEAD
-=======
-import services.MealServices;
->>>>>>> 67e931d1ca6bcb17754454ad0cbf0d21535487a0
 import classes.Customer;
 import classes.CustomerLocations;
 import services.CustomerServices;
@@ -45,6 +41,8 @@ public class MainMenu
 		int menuOption;
 		Console cnsl = null;
 		
+		// double check; login stopped working
+		
 		cnsl = System.console();
 	    do
 	    {
@@ -65,6 +63,8 @@ public class MainMenu
 	    		System.out.println(e.getMessage());
 	    	}
 
+	    	
+	    	// need to handle input mismatch exception is user enters string/etc.
 	   
 	    	System.out.print("Please select an option # ");
 	    	menuOption = input.nextInt();
@@ -105,7 +105,7 @@ public class MainMenu
 			
 			while (counter < fields.size())
 			{
-				System.out.print(fields.get(counter) + ": ");
+				System.out.print(fields.get(counter));
 				String user_input = input.next(); // is .next() good enough?
 				
 				// validation on proper password/email go below (this is before actually checking if the customer exists)
@@ -123,6 +123,8 @@ public class MainMenu
 			
 			String email = (String) fields.get(0);
 			String password = (String) fields.get(1);
+			
+			//System.out.println("email is: " + email + " and password is: " + password);
 			
 			Customer customerCheck = custService.customerExists(email, password); // could also just directly assign to currentCustomer
 			
@@ -264,6 +266,7 @@ public class MainMenu
 			{
 				case 1:
 					viewMeals();
+					pressToContinue();
 					break;
 				case 2:
 					viewOrders(); // this will include option to view order details, so might need separate function to just display orders
@@ -273,6 +276,7 @@ public class MainMenu
 					break;
 				case 4:
 					viewCreditCards();
+					pressToContinue();
 					break;
 				case 5:
 					return 1;
@@ -445,6 +449,7 @@ public class MainMenu
 			{
 				case 1:
 					viewOrderDetails();
+					pressToContinue();
 					break;
 				case 2:
 					return 1;
@@ -473,6 +478,8 @@ public class MainMenu
 		OrderMealsServices orderMealsService = new OrderMealsServices();
 		orderMealsService.displayForID(currentCustomer.getID());
 		
+		
+		// do cls here or outside?
 		return 1;
 		
 	}
@@ -535,6 +542,25 @@ public class MainMenu
 	public static void updateAddress()
 	{
 		
+	}
+	
+	public static void pressToContinue() {
+		while(true)
+		{
+			try
+	        {
+				System.out.println("Press the Enter key to continue");
+	            System.in.read();
+	        }  
+	        catch(Exception e)
+	        {
+	        	
+	        	System.out.println(e.getMessage());
+	        }  
+			break;
+		}
+		
+		return;
 	}
 	
 	public static DatabaseConnection getConnected()

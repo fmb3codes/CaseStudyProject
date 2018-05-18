@@ -36,7 +36,7 @@ public class CustomerServices implements ServiceOperations{
 		//service.displayRecord(testCustomer1);
 		//service.displayRecords();
 		
-		Customer cust_info = service.customerExists("david@gmail.com", "password21");
+		Customer cust_info = service.customerExists("david@gmail.com", "password1");
 		
 		System.out.println(cust_info);
 		
@@ -439,7 +439,7 @@ public class CustomerServices implements ServiceOperations{
 		System.out.println("Getting here");
 		
 		try {
-			PreparedStatement oracleStmt = con.prepareStatement("Select * from Customers where email = ? and password = ?");
+			PreparedStatement oracleStmt = con.prepareStatement("Select * from Customers where email=? and password=?");
 
 			// change to prepared
 			//PreparedStatement stmt = con.prepareStatement("Select C_ID from Customers where email = ? and password = ?");
