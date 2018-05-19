@@ -1,5 +1,6 @@
 package services;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,12 +8,38 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import classes.DatabaseConnection;
+import classes.OrderMeal;
 import interfaces.ServiceOperations;
 
-public class OrderMealsServices implements ServiceOperations {
-
-	public OrderMealsServices() {
+public class OrderMealsServices implements ServiceOperations 
+{
+	private DatabaseConnection db_connection;
+	private String name;
+	
+	private void setDatabaseConnection(DatabaseConnection db) {this.db_connection = db;}
+	private void setName(String name) 	  				  {this.name = name;}
+	
+	public OrderMealsServices() 
+	{
 		// TODO Auto-generated constructor stub
+	}
+	
+	public OrderMealsServices(DatabaseConnection db) 
+	{
+		this.setDatabaseConnection(db);
+		this.setName(name);
+	}
+	
+	public void create(OrderMeal om) throws SQLException, Exception
+	{
+		CallableStatement oraCallStmt = db_connection
+				.getConnection()
+				.prepareCall("{call SP_INSERT_NEW_OM(?,?,?)}");
+		oraCallStmt.setString(1, om.getMealID());
+		oraCallStmt.setString(2, om.getOrderID());
+		oraCallStmt.setInt(3, om.getQty());
+		oraCallStmt.execute();
+		System.out.println("A new order has been succesfully added");
 	}
 
 	@Override

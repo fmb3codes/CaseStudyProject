@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CustomerLocationServices implements DatabaseServices
 {
@@ -16,10 +17,14 @@ public class CustomerLocationServices implements DatabaseServices
 	private CustomerLocations customerLocation;
 	
 	//Constructor
-	
 	public CustomerLocationServices()
 	{
 		
+	}
+	
+	public CustomerLocationServices(DatabaseConnection db)
+	{
+		this.db_connection = db;
 	}
 	
 	public CustomerLocationServices(DatabaseConnection db, CustomerLocations customerLocation)
@@ -160,6 +165,31 @@ public class CustomerLocationServices implements DatabaseServices
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public ArrayList<String> getAddresses() throws SQLException, Exception
+	{
+		ArrayList<String> ids = new ArrayList<String>();
+		int k = 0;
+		String format = "|%1$-3s|%2$-50s|%3$-20s|%4$-7s|\n";
+		ResultSet oraResult = db_connection
+				.getStatement()
+				.executeQuery("SELECT CL_ID, STREET_ADDRESS, CITY, ZIP_CODE FROM CUSTOMERS_LOCATIONS");
+		
+		System.out.format(format,"#","Street","City","Zip Code");
+		while(oraResult.next())
+		{
+			k++;
+			System.out.format(format,
+					k,
+					oraResult.getString(2),
+					oraResult.getString(3),
+					oraResult.getString(4)
+			);
+			ids.add(oraResult.getString(1));
+		}
+		
+		return ids;
 	}
 	
 }

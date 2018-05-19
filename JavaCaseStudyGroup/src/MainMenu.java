@@ -15,7 +15,7 @@ import classes.DatabaseConnection;
 import classes.DeliveryLocations;
 
 import classes.Locations;
-
+import classes.OrderMeal;
 import services.MealServices;
 
 import classes.Customer;
@@ -32,7 +32,7 @@ import services.LocationTypeServices;
 import services.MealServices;
 import services.MealTypeServices;
 //import services.OrderMealsServices;
-
+import services.OrderMealsServices;
 import services.OrderServices;
 
 import exceptions.LocationException;
@@ -224,7 +224,7 @@ public class MainMenu
 	    	System.out.println("*****************************");
 	    	System.out.println("*                           *");
 	    	System.out.println("* 1. Address                *");
-	    	System.out.println("* 2. ####                   *");
+	    	System.out.println("* 2. Meal                   *");
 	    	System.out.println("* 3. ######                 *");
 	    	System.out.println("* 4. #######                *");
 	    	System.out.println("* 5. Selection Menu         *");
@@ -240,7 +240,7 @@ public class MainMenu
 					addNewAddress();
 					break;
 				case 2:
-					
+					addNewOrder();
 					break;
 				case 3:
 					
@@ -259,6 +259,86 @@ public class MainMenu
 		
 	}
 	
+	private static void addNewOrder() 
+	{
+		ArrayList<String> ids = new ArrayList<String>();
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		int selected;
+		
+		do
+		{
+			try 
+			{
+				Orders order = new Orders();
+				OrderMeal om = new OrderMeal();
+				CustomerLocations cl = new CustomerLocations();
+				
+				MealServices ms = new MealServices(getConnected());
+				CustomerLocationServices cls = new CustomerLocationServices(getConnected());
+				OrderMealsServices oms = new OrderMealsServices(getConnected());
+				ids = ms.getMeals();
+				for(int i = 0; i < ids.size(); i++)
+					selection.add(i);
+		
+				do
+				{
+					System.out.print("What meal # would you like to add: ");
+					selected = input.nextInt();
+					
+				}while(!selection.contains((selected)));
+				
+				om.setMealID(ids.get((selected - 1)));
+				ids.clear();
+				selection.clear();
+				
+				input.nextLine();
+				System.out.println("Please enter quantity");
+				om.setQty(input.nextInt());
+				
+				input.nextLine();
+				System.out.println("What day would you like the order to be delivered?");
+				order.setDelivery_date(input.nextLine());
+				
+				input.nextLine();
+				System.out.println("Where would you like the order to be delivered?");
+				ids = cls.getAddresses();
+				for(int i = 0; i < ids.size(); i++)
+					selection.add(i);
+				do
+				{
+					System.out.print("choose address: ");
+					selected = input.nextInt();
+					
+				}while(!selection.contains((selected)));
+				
+				order.setCustomer_location(ids.get((selected - 1)));
+				order.setCustomer_id(currentCustomer.getID());
+				order.setOrder_status("1000001");  //to be as default
+				order.setOrder_on_hold(false); //to be as default
+				order.setTimes_changes(0); //to be as default
+				order.setOrder_date(today); //to be as default
+				
+				OrderServices os = new OrderServices(getConnected(), order);
+				os.Create();
+				
+				om.setOrderID(os.getOrderID(currentCustomer.getID()));
+				
+				oms.create(om);
+				
+				
+				
+			} catch (SQLException e) 
+			{
+				e.printStackTrace();
+			} catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+	
+		}while(true);
+		
+	}
+
 	public static int viewMenu()
 	{
 		int menuOption;
