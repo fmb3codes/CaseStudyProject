@@ -325,6 +325,8 @@ public class MainMenu
 				
 				oms.create(om);
 				
+				//need to add, how he/she wants to pay, i.e. credit card or cash
+				
 				
 				
 			} catch (SQLException e) 
