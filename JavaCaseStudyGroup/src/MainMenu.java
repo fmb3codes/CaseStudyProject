@@ -17,12 +17,15 @@ import classes.DeliveryLocations;
 import classes.Locations;
 import classes.OrderMeal;
 import services.MealServices;
-
+import classes.CreditCardDetails;
 import classes.Customer;
 import classes.CustomerLocations;
+import classes.CustomersCreditCards;
 import services.CustomerServices;
 import classes.Orders;
-
+import classes.PaymentTypes;
+import classes.Payments;
+import services.CreditCardDetailServices;
 import services.CustomerLocationServices;
 import services.CustomersCreditCardServices;
 import services.DeliveryServices;
@@ -34,7 +37,8 @@ import services.MealTypeServices;
 //import services.OrderMealsServices;
 import services.OrderMealsServices;
 import services.OrderServices;
-
+import services.PaymentServices;
+import services.PaymentTypeServices;
 import exceptions.LocationException;
 import exceptions.OrderException;
 import java.io.Console;
@@ -264,6 +268,7 @@ public class MainMenu
 		ArrayList<String> ids = new ArrayList<String>();
 		ArrayList<Integer> selection = new ArrayList<Integer>();
 		int selected;
+		int k = 0;
 		
 		do
 		{
@@ -272,6 +277,7 @@ public class MainMenu
 				Orders order = new Orders();
 				OrderMeal om = new OrderMeal();
 				CustomerLocations cl = new CustomerLocations();
+				OrderServices os = new OrderServices(getConnected(), order);
 				
 				MealServices ms = new MealServices(getConnected());
 				CustomerLocationServices cls = new CustomerLocationServices(getConnected());
@@ -318,16 +324,101 @@ public class MainMenu
 				order.setTimes_changes(0); //to be as default
 				order.setOrder_date(today); //to be as default
 				
-				OrderServices os = new OrderServices(getConnected(), order);
 				os.Create();
-				
 				om.setOrderID(os.getOrderID(currentCustomer.getID()));
-				
 				oms.create(om);
 				
-				//need to add, how he/she wants to pay, i.e. credit card or cash
 				
+				input.nextLine();
+				System.out.println("How would you like to pay this order");
+				ids.clear();
+				selection.clear();
+				PaymentTypes pt = new PaymentTypes();
+				PaymentTypeServices pts = new PaymentTypeServices(getConnected());
+				ids = pts.getPaymentType();
+				for(String i : ids)
+				{
+					k++;
+					selection.add(k);
+				}
+					
+				do
+				{
+					System.out.print("choose type: ");
+					selected = input.nextInt();
+					
+				}while(!selection.contains((selected)));
 				
+				pt.setPT_ID(ids.get((selected - 1)));
+				ids.clear();
+				selection.clear();
+				
+				switch((selected-1))
+				{
+					//cash
+					case 0:
+						System.out.println("In case 1");
+						
+						//insert into payments
+						Payments p = new Payments();
+						p.setOrderID(om.getOrderID());
+						p.setPaymentType(pt.getPT_ID());
+						PaymentServices ps = new PaymentServices(getConnected(),p);
+						ps.Create();
+						break;
+						
+					//credit card
+					case 1:
+						System.out.println("In case 2");
+						
+						//insert into payments
+						Payments p2 = new Payments();
+						p2.setOrderID(om.getOrderID());
+						p2.setPaymentType(pt.getPT_ID());
+						PaymentServices ps2 = new PaymentServices(getConnected(),p2);
+						
+						ps2.Create();
+						
+						k = 0;
+						
+						CustomersCreditCards ccc = new CustomersCreditCards();
+						CustomersCreditCardServices cccs = new CustomersCreditCardServices(getConnected());
+						ids = cccs.getAllCreditCards(currentCustomer.getID());
+						
+						for(String i : ids)
+						{
+							k++;
+							selection.add(k);
+						}
+						
+						do
+						{
+							System.out.print("choose credit card: ");
+							selected = input.nextInt();
+							
+						}while(!selection.contains((selected)));
+						
+						ccc.setCC_ID((ids.get((selected-1))));
+						ccc.setC_ID(currentCustomer.getID());
+						
+						ids.clear();
+						selection.clear();
+						
+						//insert into credit card details
+						CreditCardDetails ccd = new CreditCardDetails();
+						
+						ccd.setP_ID(ps2.getPaymentID(os.getOrderID(currentCustomer.getID())));
+						ccd.setO_ID(os.getOrderID(currentCustomer.getID()));
+						ccd.setCC_ID(ccc.getCC_ID());
+						
+						CreditCardDetailServices ccds = new CreditCardDetailServices(
+								getConnected(), ccd);
+						
+						ccds.Create();
+				
+						break;
+				}
+						
 				
 			} catch (SQLException e) 
 			{

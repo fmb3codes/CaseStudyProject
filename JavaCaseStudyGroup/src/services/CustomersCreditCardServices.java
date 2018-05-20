@@ -5,12 +5,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import classes.DatabaseConnection;
 import interfaces.DatabaseServices;
 
 public class CustomersCreditCardServices implements DatabaseServices 
 {
+	
+	private DatabaseConnection db_connection;
+	private String name;
+	
+	private void setDatabaseConnection(DatabaseConnection db) {this.db_connection = db;}
+	private void setName(String name) 	  				  {this.name = name;}
+	
+	public CustomersCreditCardServices()
+	{
+		
+	}
+
+	public CustomersCreditCardServices(DatabaseConnection db) 
+	{
+		this.setDatabaseConnection(db);
+		this.setName(name);
+	}
 
 	@Override
 	public void Create() throws SQLException, Exception {
@@ -119,6 +137,39 @@ public class CustomersCreditCardServices implements DatabaseServices
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+	public ArrayList<String> getAllCreditCards(String id) throws SQLException, Exception
+	{
+		ArrayList<String> ids = new ArrayList<String>();
+		int k = 0;
+		String format = "|%1$-3s|%2$-20s|%3$-20s|%4$-15s|\n";
+		PreparedStatement oraPrepStmt = db_connection
+				.getConnection()
+				.prepareStatement("SELECT CC.CC_ID, CC.NAME_ON_CARD, CC.CARD_NUMBER, CT.NAME FROM "
+						+ "CUSTOMERS_CREDIT_CARDS CCC "
+						+ "JOIN CREDIT_CARDS CC ON CCC.CC_ID = CC.CC_ID "
+						+ "JOIN CARD_TYPES CT ON CC.CT_ID = CT.CT_ID "
+						+ "WHERE CCC.C_ID = ?");
+		oraPrepStmt.setString(1, id);
+		ResultSet oraResult = oraPrepStmt.executeQuery();
+		
+		System.out.format(format,"#","Name","Credit Card","Type");
+		while(oraResult.next())
+		{
+			k++;
+			System.out.format(format,
+					k,
+					oraResult.getString(2),
+					oraResult.getString(3),
+					oraResult.getString(4)
+			);
+			ids.add(oraResult.getString(1));
+		}
+		
+		return ids;
+
 		
 	}
 
