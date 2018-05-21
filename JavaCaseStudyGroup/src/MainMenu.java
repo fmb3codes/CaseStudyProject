@@ -17,6 +17,8 @@ import classes.DeliveryLocations;
 import classes.Locations;
 import classes.OrderMeal;
 import services.MealServices;
+import classes.CardTypes;
+import classes.CreditCard;
 import classes.CreditCardDetails;
 import classes.Customer;
 import classes.CustomerLocations;
@@ -25,7 +27,9 @@ import services.CustomerServices;
 import classes.Orders;
 import classes.PaymentTypes;
 import classes.Payments;
+import services.CardTypeServices;
 import services.CreditCardDetailServices;
+import services.CreditCardServices;
 import services.CustomerLocationServices;
 import services.CustomersCreditCardServices;
 import services.DeliveryServices;
@@ -51,6 +55,7 @@ public class MainMenu
 	final static String today = fDate.format(now);
 	static Scanner input = new Scanner(System.in);
 	static Customer currentCustomer;
+	static DatabaseConnection getConnected;
 	
 	
 	
@@ -58,12 +63,10 @@ public class MainMenu
 	{
 		int menuOption;
 
-		Console cnsl = null;
+		getConnected();
 		
 		// double check; login stopped working
 		
-		cnsl = System.console();
-
 	    do
 	    {
 	    	System.out.println("*****************************");
@@ -74,16 +77,7 @@ public class MainMenu
 	    	System.out.println("* 2. Register               *");
 	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
-
 	    	
-	    	try 
-	    	{
-	    		cnsl.flush();
-	    	}catch(Exception e)
-	    	{
-	    		System.out.println(e.getMessage());
-	    	}
-
 	    	
 	    	// need to handle input mismatch exception is user enters string/etc.
 
@@ -229,7 +223,7 @@ public class MainMenu
 	    	System.out.println("*                           *");
 	    	System.out.println("* 1. Address                *");
 	    	System.out.println("* 2. Meal                   *");
-	    	System.out.println("* 3. ######                 *");
+	    	System.out.println("* 3. Credit Card            *");
 	    	System.out.println("* 4. #######                *");
 	    	System.out.println("* 5. Selection Menu         *");
 	    	System.out.println("*                           *");
@@ -247,7 +241,7 @@ public class MainMenu
 					addNewOrder();
 					break;
 				case 3:
-					
+					addCreditCard();
 					break;
 				case 4:
 	
@@ -263,6 +257,70 @@ public class MainMenu
 		
 	}
 	
+	private static void addCreditCard() 
+	{
+		ArrayList<String> ids = new ArrayList<String>();
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		int selected;
+		int k = 0;
+		
+		do
+		{
+			try 
+			{
+				input.nextLine();
+				CreditCard cc = new CreditCard();
+				CardTypeServices cts = new CardTypeServices(getConnected);
+				CustomersCreditCards customerCards = new CustomersCreditCards();
+				
+				System.out.println("Please enter name of credit card: ");
+				cc.setNameOnCard(input.nextLine());
+				System.out.println("Please enter card number");
+				cc.setCardNumber(input.nextLine());
+				System.out.println("What type of card is it: ");
+				ids = cts.getAllCardTypeID();
+				for(String i: ids)
+				{
+					k++;
+					selection.add(k);
+				}
+				
+				do
+				{
+					System.out.print("Select a card type: ");
+					selected = input.nextInt();
+					
+				}while(!selection.contains((selected)));
+				
+				cc.setCardType((ids.get((selected - 1))));
+				ids.clear();
+				selection.clear();
+				
+				
+				//created a new credit card
+				CreditCardServices ccs = new CreditCardServices(getConnected, cc);
+				ccs.Create();
+				
+				customerCards.setC_ID(currentCustomer.getID());
+				customerCards.setCC_ID(ccs.getCreditCard());
+				
+				//creates a new customer credit card
+				CustomersCreditCardServices cccs = new CustomersCreditCardServices(getConnected, customerCards);
+				cccs.Create();
+				
+				
+			} catch (SQLException e) 
+			{
+				e.printStackTrace();
+			} catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+
+		}while(true);
+		
+	}
+
 	private static void addNewOrder() 
 	{
 		ArrayList<String> ids = new ArrayList<String>();
@@ -277,11 +335,11 @@ public class MainMenu
 				Orders order = new Orders();
 				OrderMeal om = new OrderMeal();
 				CustomerLocations cl = new CustomerLocations();
-				OrderServices os = new OrderServices(getConnected(), order);
+				OrderServices os = new OrderServices(getConnected, order);
 				
-				MealServices ms = new MealServices(getConnected());
-				CustomerLocationServices cls = new CustomerLocationServices(getConnected());
-				OrderMealsServices oms = new OrderMealsServices(getConnected());
+				MealServices ms = new MealServices(getConnected);
+				CustomerLocationServices cls = new CustomerLocationServices(getConnected);
+				OrderMealsServices oms = new OrderMealsServices(getConnected);
 				ids = ms.getMeals();
 				for(int i = 0; i < ids.size(); i++)
 					selection.add(i);
@@ -324,7 +382,12 @@ public class MainMenu
 				order.setTimes_changes(0); //to be as default
 				order.setOrder_date(today); //to be as default
 				
+				
+				//creates the order in orders table
 				os.Create();
+				
+				//gets the current order id of the current customer
+				//and sets it in order_meals table
 				om.setOrderID(os.getOrderID(currentCustomer.getID()));
 				oms.create(om);
 				
@@ -334,12 +397,15 @@ public class MainMenu
 				ids.clear();
 				selection.clear();
 				PaymentTypes pt = new PaymentTypes();
-				PaymentTypeServices pts = new PaymentTypeServices(getConnected());
+				PaymentTypeServices pts = new PaymentTypeServices(getConnected);
 				ids = pts.getPaymentType();
+
+				k = 0;
 				for(String i : ids)
 				{
 					k++;
 					selection.add(k);
+					
 				}
 					
 				do
@@ -363,7 +429,7 @@ public class MainMenu
 						Payments p = new Payments();
 						p.setOrderID(om.getOrderID());
 						p.setPaymentType(pt.getPT_ID());
-						PaymentServices ps = new PaymentServices(getConnected(),p);
+						PaymentServices ps = new PaymentServices(getConnected,p);
 						ps.Create();
 						break;
 						
@@ -375,14 +441,14 @@ public class MainMenu
 						Payments p2 = new Payments();
 						p2.setOrderID(om.getOrderID());
 						p2.setPaymentType(pt.getPT_ID());
-						PaymentServices ps2 = new PaymentServices(getConnected(),p2);
+						PaymentServices ps2 = new PaymentServices(getConnected,p2);
 						
 						ps2.Create();
 						
 						k = 0;
 						
 						CustomersCreditCards ccc = new CustomersCreditCards();
-						CustomersCreditCardServices cccs = new CustomersCreditCardServices(getConnected());
+						CustomersCreditCardServices cccs = new CustomersCreditCardServices(getConnected);
 						ids = cccs.getAllCreditCards(currentCustomer.getID());
 						
 						for(String i : ids)
@@ -411,8 +477,7 @@ public class MainMenu
 						ccd.setO_ID(os.getOrderID(currentCustomer.getID()));
 						ccd.setCC_ID(ccc.getCC_ID());
 						
-						CreditCardDetailServices ccds = new CreditCardDetailServices(
-								getConnected(), ccd);
+						CreditCardDetailServices ccds = new CreditCardDetailServices(getConnected, ccd);
 						
 						ccds.Create();
 				
@@ -496,7 +561,7 @@ public class MainMenu
 			try 
 			{
 				CustomerLocations cl = new CustomerLocations();
-				LocationTypeServices ls = new LocationTypeServices(getConnected());
+				LocationTypeServices ls = new LocationTypeServices(getConnected);
 				
 				System.out.print("Please enter your street address:");
 				cl.setStreetAdress(input.nextLine());
@@ -529,7 +594,7 @@ public class MainMenu
 				cl.setCustomerID(currentCustomer.getID());
 				
 				CustomerLocationServices cls = new CustomerLocationServices
-				(getConnected(), cl);
+				(getConnected, cl);
 				
 				cls.Create();
 				
@@ -762,10 +827,10 @@ public class MainMenu
 		return;
 	}
 	
-	public static DatabaseConnection getConnected()
+	public static void getConnected()
 	{
 		DatabaseConnection db = new DatabaseConnection();
-		return db;
+		getConnected = db;
 	}
 	
 }

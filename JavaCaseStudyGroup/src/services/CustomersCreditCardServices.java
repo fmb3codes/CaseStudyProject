@@ -1,5 +1,6 @@
 package services;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +8,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import classes.CreditCard;
+import classes.CustomersCreditCards;
 import classes.DatabaseConnection;
 import interfaces.DatabaseServices;
 
@@ -15,6 +18,7 @@ public class CustomersCreditCardServices implements DatabaseServices
 	
 	private DatabaseConnection db_connection;
 	private String name;
+	private CustomersCreditCards customerCard;
 	
 	private void setDatabaseConnection(DatabaseConnection db) {this.db_connection = db;}
 	private void setName(String name) 	  				  {this.name = name;}
@@ -23,16 +27,28 @@ public class CustomersCreditCardServices implements DatabaseServices
 	{
 		
 	}
-
+	
 	public CustomersCreditCardServices(DatabaseConnection db) 
 	{
 		this.setDatabaseConnection(db);
-		this.setName(name);
+	}
+
+	public CustomersCreditCardServices(DatabaseConnection db, CustomersCreditCards c) 
+	{
+		this.setDatabaseConnection(db);
+		this.customerCard = c;
 	}
 
 	@Override
-	public void Create() throws SQLException, Exception {
-		// TODO Auto-generated method stub
+	public void Create() throws SQLException, Exception
+	{
+		CallableStatement oraCallStmt = db_connection
+				.getConnection()
+				.prepareCall("{call SP_INSERT_CC(?,?)}");
+		oraCallStmt.setString(1, customerCard.getCC_ID() );
+		oraCallStmt.setString(2, customerCard.getC_ID());
+		oraCallStmt.executeQuery();
+		System.out.println("A new credit card has been succesfully added");
 		
 	}
 
