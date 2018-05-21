@@ -32,7 +32,7 @@ import services.LocationTypeServices;
 import services.MealServices;
 import services.MealTypeServices;
 //import services.OrderMealsServices;
-
+import services.OrderMealsServices;
 import services.OrderServices;
 
 import exceptions.LocationException;
@@ -288,9 +288,11 @@ public class MainMenu
 					break;
 				case 2:
 					viewOrders(); // this will include option to view order details, so might need separate function to just display orders
+					// Orders has sub menu so no press to continue here
 					break;
 				case 3:
 					viewLocations();
+					pressToContinue();
 					break;
 				case 4:
 					viewCreditCards();
@@ -456,6 +458,8 @@ public class MainMenu
 		// not doing this in displayRecords since admins may call same function and the message might be different
 		OrderServices orderService  = new OrderServices(); 
 		
+		// TODO ONLY DISPLAY ORDER DETAILS IF THE CUSTOMER HAS ORDERS
+		
 		int menuOption;
 
 		do
@@ -501,8 +505,8 @@ public class MainMenu
 	public static int viewOrderDetails() 
 	{
 		
-		//OrderMealsServices orderMealsService = new OrderMealsServices();
-		//orderMealsService.displayForID(currentCustomer.getID());
+		OrderMealsServices orderMealsService = new OrderMealsServices();
+		orderMealsService.displayForID(currentCustomer.getID());
 		
 		
 		// do cls here or outside?
@@ -515,7 +519,7 @@ public class MainMenu
 		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
 		// not doing this in displayRecords since admins may call same function and the message might be different
 		CustomersCreditCardServices creditCardService = new CustomersCreditCardServices();
-		//creditCardService.displayForID(currentCustomer.getID());
+		creditCardService.displayForID(currentCustomer.getID());
 		
 		return 1;
 	}
