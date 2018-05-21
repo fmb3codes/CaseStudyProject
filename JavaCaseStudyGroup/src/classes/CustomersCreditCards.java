@@ -5,6 +5,9 @@ public class CustomersCreditCards {
 	
 	private String C_ID;
 	private String CC_ID;
+	
+	public CustomersCreditCards()
+	{}
 	/**
 	 * @param c_ID
 	 * @param cC_ID
