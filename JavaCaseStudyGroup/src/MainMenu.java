@@ -1,4 +1,7 @@
 import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Set;
@@ -142,7 +145,7 @@ public class MainMenu
 			String email = (String) fields.get(0);
 			String password = (String) fields.get(1);
 			
-			//System.out.println("email is: " + email + " and password is: " + password);
+			System.out.println("email is: " + email + " and password is: " + password);
 			
 			Customer customerCheck = custService.customerExists(email, password); // could also just directly assign to currentCustomer
 			
@@ -171,6 +174,7 @@ public class MainMenu
 
 		do
 		{
+			
 			System.out.println("*****************************");
 	    	System.out.println("Welcome " + currentCustomer.getfName() + "");
 	    	System.out.println("*****************************");
@@ -283,7 +287,7 @@ public class MainMenu
 			switch(menuOption)
 			{
 				case 1:
-					viewMeals();
+					viewMenu();
 					pressToContinue();
 					break;
 				case 2:
@@ -430,24 +434,73 @@ public class MainMenu
 		
 	}
 	
-	public void deleteOrder()
-	{
+	public static void deleteOrder(){	
+		ArrayList<String> ids = new ArrayList<String>();
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		int locOp = 0;
 		
+		int selectOption;
+		input.nextLine();
+		do
+		{
+
+			try {
+			OrderServices orderServices = new OrderServices(getConnected());
+			Orders order = new Orders();
+			//order.displayForID(currentCustomer.getID());
+			ids = orderServices.getAllOrderIDs(currentCustomer.getID());
+			for(String i : ids)
+			{
+				locOp++;
+				selection.add(locOp);
+			}
+			
+			
+	    	do
+			{
+				System.out.print("Enter your order number ");
+				selectOption = input.nextInt();
+				
+			}while(!selection.contains((selectOption)));
+	    	
+	    	order.setOrder_id(ids.get((selectOption - 1)));
+	    	order.setCustomer_id(currentCustomer.getID());
+			orderServices =  new OrderServices(getConnected(), order);
+			
+				
+	    	orderServices.Delete();
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			/*{
+				CallableStatement oraCallStmt = db_connection.getConnection()
+				.prepareCall("{call SP_DELETE_ORDER(?)}");
+				DatabaseConnection db = new DatabaseConnection();
+
+				oraCallStmt.setString(1, order.getOrder_id);
+				oraCallStmt.execute();
+				System.out.println("Order " + order.getOrder_id() + " has been succesfully deleted");
+			} */
+
+			
+		}while(true);
+		
+		
+		
+
 	}
-	
+		
+		
 	public void deleteCustomerLocation()
 	{
 		
-	}
-	
-	public static int viewMeals() 
-	{
-		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
-		// not doing this in displayRecords since admins may call same function and the message might be different
-		MealServices mealService = new MealServices();
-		mealService.displayRecords();
-		
-		return 1;
 	}
 	
 	public static int viewOrders() 
@@ -466,6 +519,7 @@ public class MainMenu
 	    	System.out.println("*****************************");
 	    	System.out.println("* 1. Order Details          *");
 	    	System.out.println("* 2. View Menu              *");
+	    	System.out.println("* 3. Delete Order           *");
 	    	System.out.println("*****************************");
 	    	
 			System.out.print("Please select an option # ");
@@ -479,6 +533,9 @@ public class MainMenu
 					break;
 				case 2:
 					return 1;
+				case 3:
+					deleteOrder();
+					break;
 				default:
 					System.out.println("Please enter 1 or 2");
 					break;
@@ -488,14 +545,47 @@ public class MainMenu
 
 	}
 	
+
 	public static int viewLocations() 
 	{
 		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
 		// not doing this in displayRecords since admins may call same function and the message might be different
 		CustomerLocationServices custLocService = new CustomerLocationServices();
 		custLocService.displayForID(currentCustomer.getID());
-		
-		return 1;
+		int menuOption;
+
+		do
+		{
+			custLocService.displayForID(currentCustomer.getID());
+			System.out.println("*****************************");
+	    	System.out.println("What would you like to do?   ");
+	    	System.out.println("*****************************");
+	    	System.out.println("* 1. Location Details       *");
+	    	System.out.println("* 2. View Menu              *");
+	    	System.out.println("* 3. Delete Order           *");
+	    	System.out.println("*****************************");
+	    	
+			System.out.print("Please select an option # ");
+			menuOption = input.nextInt();
+			
+			switch(menuOption)
+			{
+				case 1:
+					viewOrderDetails();
+					pressToContinue();
+					break;
+				case 2:
+					return 1;
+				case 3:
+					//deleteCustomerLocation();
+					break;
+				default:
+					System.out.println("Please enter 1 or 2");
+					break;
+			}
+			
+		}while(true);
+
 	}
 	
 	public static int viewOrderDetails() 

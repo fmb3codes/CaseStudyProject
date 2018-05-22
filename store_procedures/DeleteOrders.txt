@@ -4,3 +4,5 @@ as
 Begin
  delete from orders  where O_ID = id;
 END;
+
+insert into orders(O_ID, C_ID, ORDER_DATE, OS_ID, CL_ID, DELIVERY_DATE, ORDER_ON_HOLD, TIMES_CHANGED) VALUES(SEQ_ORDERS.NEXTVAL ,'05-MAY-2018', '05-MAY-2018', '0', 0, '1000001','1000000','1000002');

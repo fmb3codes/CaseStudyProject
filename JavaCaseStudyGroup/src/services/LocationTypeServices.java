@@ -1,6 +1,8 @@
 package services;
 
 
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import interfaces.DatabaseServices;
 
 public class LocationTypeServices implements DatabaseServices
 {
+	private static String getLT_ID;
 	private DatabaseConnection db_connection;
 	private String name;
 	
@@ -36,18 +39,47 @@ public class LocationTypeServices implements DatabaseServices
 	}
 
 	@Override
-	public void Update() throws SQLException, Exception 
+	public void Delete() throws SQLException, Exception 
 	{
-		// TODO Auto-generated method stub
+		CallableStatement oraCallStmt = db_connection
+				.getConnection()
+				.prepareCall("{call SP_DEL_NEW_Order(?)}");
+
+				oraCallStmt.setString(1, LocationTypeServices.getLT_ID());
+				oraCallStmt.execute();
+				System.out.println("Order " + LocationTypeServices.getLT_ID() + " has been succesfully deleted");
 		
 	}
 
-	@Override
-	public void Delete() throws SQLException, Exception 
-	{
+	private static String getLT_ID() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
+
+	public ArrayList<String> getAllOrderIDs(String id) throws SQLException, Exception
+	{
+		ArrayList<String> ids = new ArrayList<String>();
+		int k = 0;
+
+		PreparedStatement oraResult = db_connection
+				.getConnection()
+				.prepareStatement("SELECT O_ID, DELIVERY_DATE, ORDER_ON_HOLD FROM ORDERS"
+						+ " WHERE C_ID = ? ");
+		oraResult.setString(1, id);
+		ResultSet result = oraResult.executeQuery();
+		
+
+		while(result.next())
+		{
+			k++;
+			System.out.println(k + " " + result.getString(2) + result.getString(3));
+			ids.add(result.getString(1));
+		}
+			
+		
+		return ids;
+	}
+
 
 	@Override
 	public void GetAll() throws SQLException, Exception 
@@ -89,6 +121,12 @@ public class LocationTypeServices implements DatabaseServices
 			names.add(oraResult.getString("LOCATION_NAME"));
 			
 		return names;
+	}
+
+	@Override
+	public void Update() throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
