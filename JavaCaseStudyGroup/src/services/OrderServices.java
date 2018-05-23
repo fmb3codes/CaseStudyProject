@@ -224,6 +224,87 @@ public class OrderServices implements DatabaseServices
 			}
 			
 		}
+		
+		public void displayForIDToUpdate(String custID) {
+			
+			DatabaseConnection site = new DatabaseConnection();
+			Connection con = site.getConnection();
+			
+						
+			try {
+				PreparedStatement oracleStmt = con.prepareStatement("Select O_ID as \"Order ID\", ORDER_DATE as \"Order Date\", DELIVERY_DATE as \"Delivery Date\", ORDER_ON_HOLD as \"Order Status\" from Orders, Order_Status where Orders.OS_ID=Order_Status.OS_ID AND Order_Status.NAME = 'PENDING' AND C_ID=?");
+				oracleStmt.setString(1, custID);
+				
+				
+				// NEED to parse order_on_hold to properly display status
+				
+				ResultSet oracleRs = oracleStmt.executeQuery();
+				
+				int num_fields = 0;
+				ResultSetMetaData meta_data;
+				
+				if (oracleRs != null) {
+					meta_data = oracleRs.getMetaData();
+					num_fields = meta_data.getColumnCount();
+					
+					String[] col_names = new String[num_fields];
+
+					
+					for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
+					    col_names[i - 1] = meta_data.getColumnName(i);
+					}	
+					
+					// add if statement to only print if a record was found
+					for (String j:col_names){
+						System.out.print("| " + j + " ");
+					}
+					
+				}
+				
+				
+				while (oracleRs.next()) {
+					//System.out.println(oracleRs.getString("first_name") + " " + oracleRs.getString(2) + " " + oracleRs.getInt("salary"));
+					//System.out.println(oracleRs.getString("*"));
+					
+					//System.out.println("Meta data is: ");
+					//System.out.println(oracleRs.getMetaData().getColumnCount());
+					
+					//ResultSetMetaData meta_data = oracleRs.getMetaData();
+					//int num_fields = meta_data.getColumnCount();
+					String[] col_fields = new String[num_fields];
+					//String[] col_names = new String[num_fields];
+						
+					for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
+					    col_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
+					    //col_names[i - 1] = meta_data.getColumnName(i);
+					}		
+					
+					//System.out.println(meal_fields);
+					System.out.println();
+					
+					for (String j:col_fields){
+						System.out.print("| " + j + " ");
+					}
+					
+				
+				}
+				
+			}
+			catch (Exception ex){
+				ex.printStackTrace();
+			}
+
+			
+			System.out.println("\nQuery Successful");
+			
+			try {
+				site.getConnection().close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 
 		@Override
 		public void Delete() throws SQLException, Exception 

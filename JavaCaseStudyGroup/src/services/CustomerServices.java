@@ -97,7 +97,7 @@ public class CustomerServices implements ServiceOperations{
 		}
 		
 		
-		System.out.println("Customer inserted, hopefully");
+		//System.out.println("Customer inserted, hopefully");
 		try {
 			site.getConnection().close();
 		} catch (SQLException e) {
@@ -203,7 +203,7 @@ public class CustomerServices implements ServiceOperations{
 		//System.out.println(oracleRs);
 		//System.out.println(oracleRs.getFetchSize());
 		
-		System.out.println("Customer updated, hopefully");
+		//System.out.println("Customer updated, hopefully");
 		
 		try {
 			site.getConnection().close();
@@ -235,7 +235,7 @@ public class CustomerServices implements ServiceOperations{
 		}
 		
 		
-		System.out.println("Customer deleted, hopefully");
+		//System.out.println("Customer deleted, hopefully");
 		try {
 			site.getConnection().close();
 		} catch (SQLException e) {
@@ -248,15 +248,15 @@ public class CustomerServices implements ServiceOperations{
 		DatabaseConnection site = new DatabaseConnection();
 		Connection con = site.getConnection();
 		
-		System.out.println("Getting here");
+		//System.out.println("Getting here");
 		
-		System.out.println(((Customer) customerToDelete).getID());
+		//System.out.println(((Customer) customerToDelete).getID());
 		try {
 			Statement oracleStmt = con.createStatement();
 			
 			//con.setAutoCommit(false);
 
-			System.out.println("About to delete");
+			//System.out.println("About to delete");
 			PreparedStatement oraclePreparedStmt = con.prepareStatement("Delete from Customers where C_ID=?");
 			oraclePreparedStmt.setString(1, ((Customer) customerToDelete).getID());
 			
@@ -274,7 +274,7 @@ public class CustomerServices implements ServiceOperations{
 		
 		// check size of oracleRs return and mention if empty
 		
-		System.out.println("Query successful");
+		//System.out.println("Query successful");
 		try {
 			site.getConnection().close();
 		} catch (SQLException e) {
@@ -287,7 +287,7 @@ public class CustomerServices implements ServiceOperations{
 		DatabaseConnection site = new DatabaseConnection();
 		Connection con = site.getConnection();
 		
-		System.out.println("Getting here");
+		//System.out.println("Getting here");
 		
 		try {
 			Statement oracleStmt = con.createStatement();
@@ -418,7 +418,7 @@ public class CustomerServices implements ServiceOperations{
 		}
 
 		
-		System.out.println("\nQuery Successful");
+		//System.out.println("\nQuery Successful");
 		
 		try {
 			site.getConnection().close();
@@ -436,7 +436,7 @@ public class CustomerServices implements ServiceOperations{
 		Connection con = site.getConnection();
 		Customer tempCust = null;
 		
-		System.out.println("Getting here");
+		//System.out.println("Getting here");
 		
 		try {
 			PreparedStatement oracleStmt = con.prepareStatement("Select * from Customers where email=? and password=?");
@@ -471,7 +471,7 @@ public class CustomerServices implements ServiceOperations{
 			ex.printStackTrace();
 		}
 		
-		System.out.println("Query successful");
+		//System.out.println("Query successful");
 		try {
 			site.getConnection().close();
 		} catch (SQLException e) {

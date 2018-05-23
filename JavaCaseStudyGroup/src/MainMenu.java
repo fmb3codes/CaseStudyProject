@@ -202,7 +202,7 @@ public class MainMenu
 					//updateMenu();
 					break;
 				case 4:
-	
+					deleteMenu();
 					break;
 					
 				case 5:
@@ -228,7 +228,6 @@ public class MainMenu
 	    	System.out.println("* 1. Address                *");
 	    	System.out.println("* 2. Meal                   *");
 	    	System.out.println("* 3. Credit Card            *");
-	    	System.out.println("* 4. #######                *");
 	    	System.out.println("* 5. Selection Menu         *");
 	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
@@ -551,6 +550,53 @@ public class MainMenu
 		
 	}
 	
+	public static int deleteMenu()
+	{
+		int menuOption;
+
+		do
+		{
+			System.out.println("*****************************");
+	    	System.out.println("What would you like to delete?");
+	    	System.out.println("*****************************");
+	    	System.out.println("* 1. Order                  *");
+	    	System.out.println("* 2. Address                *");
+	    	System.out.println("* 3. Credit Card            *");
+	    	System.out.println("* 4. Selection Menu         *");
+	    	System.out.println("*****************************");
+	    	
+			System.out.print("Please select an option # ");
+			menuOption = input.nextInt();
+			
+			switch(menuOption)
+			{
+				case 1:
+					viewOrdersToUpdate();
+					pressToContinue();
+					deleteOrder();
+					break;
+				case 2:
+					viewLocations();
+					pressToContinue();
+					//deleteAddress();
+					// Orders has sub menu so no press to continue here
+					break;
+				case 3:
+					viewCreditCards();
+					pressToContinue();
+					//deleteCreditCard();
+					break;
+				case 4:
+					return 1;
+				default:
+					System.out.println("Please enter 1, 2, 3, or 4");
+					break;
+			}
+			
+		}while(true);
+		
+	}
+	
 	public static void addNewAddress() 
 	{
 
@@ -753,6 +799,14 @@ public class MainMenu
 			return 1;    
 	}  
 	
+	public static int viewOrdersToUpdate()
+	{
+		OrderServices orderService = new OrderServices();
+		orderService.displayForIDToUpdate(currentCustomer.getID());
+		
+		return 1;
+	}
+	
 	public static int viewOrders() 
 	{
 		// potentially add a check to see if there are no meals, in which case a message is displayed accordingly
@@ -771,7 +825,6 @@ public class MainMenu
 	    	System.out.println("*****************************");
 	    	System.out.println("* 1. Order Details          *");
 	    	System.out.println("* 2. View Menu              *");
-	    	System.out.println("* 3. Delete Order           *");
 	    	System.out.println("*****************************");
 	    	
 			System.out.print("Please select an option # ");
@@ -785,9 +838,6 @@ public class MainMenu
 					break;
 				case 2:
 					return 1;
-				case 3:
-					deleteOrder();
-					break;
 				default:
 					System.out.println("Please enter 1 or 2");
 					break;
@@ -842,9 +892,8 @@ public class MainMenu
 	    	System.out.println("********************************");
 	    	System.out.println("*                              *");
 	    	System.out.println("* 1. Address                   *");
-	    	System.out.println("* 2. ####                      *");
-	    	System.out.println("* 3. ######                    *");
-	    	System.out.println("* 4. #######                   *");
+	    	System.out.println("* 2. Orders                    *");
+	    	System.out.println("* 3. Credit Cards              *");
 	    	System.out.println("* 5. Selection Menu            *");
 	    	System.out.println("*                              *");
 	    	System.out.println("*****************************");
