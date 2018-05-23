@@ -525,7 +525,7 @@ public class MainMenu
 			switch(menuOption)
 			{
 				case 1:
-					viewMenu();
+					viewMeals();
 					pressToContinue();
 					break;
 				case 2:
@@ -685,7 +685,7 @@ public class MainMenu
 		{
 
 			try {
-			OrderServices orderServices = new OrderServices(getConnected());
+			OrderServices orderServices = new OrderServices(getConnected);
 			Orders order = new Orders();
 			//order.displayForID(currentCustomer.getID());
 			ids = orderServices.getAllOrderIDs(currentCustomer.getID());
@@ -705,7 +705,7 @@ public class MainMenu
 	    	
 	    	order.setOrder_id(ids.get((selectOption - 1)));
 	    	order.setCustomer_id(currentCustomer.getID());
-			orderServices =  new OrderServices(getConnected(), order);
+			orderServices =  new OrderServices(getConnected, order);
 			
 				
 	    	orderServices.Delete();
@@ -742,6 +742,16 @@ public class MainMenu
 	{
 		
 	}
+	
+	public static int viewMeals()     
+	{    
+			// potentially add a check to see if there are no meals, in which case a message is displayed accordingly    
+			// not doing this in displayRecords since admins may call same function and the message might be different    
+			MealServices mealService = new MealServices();    
+			mealService.displayRecords();    
+			    
+			return 1;    
+	}  
 	
 	public static int viewOrders() 
 	{
@@ -794,40 +804,9 @@ public class MainMenu
 		// not doing this in displayRecords since admins may call same function and the message might be different
 		CustomerLocationServices custLocService = new CustomerLocationServices();
 		custLocService.displayForID(currentCustomer.getID());
-		int menuOption;
-
-		do
-		{
-			custLocService.displayForID(currentCustomer.getID());
-			System.out.println("*****************************");
-	    	System.out.println("What would you like to do?   ");
-	    	System.out.println("*****************************");
-	    	System.out.println("* 1. Location Details       *");
-	    	System.out.println("* 2. View Menu              *");
-	    	System.out.println("* 3. Delete Order           *");
-	    	System.out.println("*****************************");
-	    	
-			System.out.print("Please select an option # ");
-			menuOption = input.nextInt();
-			
-			switch(menuOption)
-			{
-				case 1:
-					viewOrderDetails();
-					pressToContinue();
-					break;
-				case 2:
-					return 1;
-				case 3:
-					//deleteCustomerLocation();
-					break;
-				default:
-					System.out.println("Please enter 1 or 2");
-					break;
-			}
-			
-		}while(true);
-
+		
+		return 1;
+		
 	}
 	
 	public static int viewOrderDetails() 
@@ -926,5 +905,7 @@ public class MainMenu
 		DatabaseConnection db = new DatabaseConnection();
 		getConnected = db;
 	}
+	
+
 	
 }
