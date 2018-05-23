@@ -281,9 +281,7 @@ public class MealServices implements ServiceOperations {
 		
 		try {
 			Statement oracleStmt = con.createStatement();
-
-			
-			ResultSet oracleRs = oracleStmt.executeQuery("Select * from Meals");
+			ResultSet oracleRs = oracleStmt.executeQuery("Select M_ID as \"#\", NAME as \"Name\", DESCRIPTION as \"Description\", PRICE as \"Price\" from Meals");
 			
 			int num_fields = 0;
 			ResultSetMetaData meta_data;
