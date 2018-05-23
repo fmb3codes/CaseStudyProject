@@ -685,7 +685,7 @@ public class MainMenu
 		{
 
 			try {
-			OrderServices orderServices = new OrderServices(getConnected());
+			OrderServices orderServices = new OrderServices(getConnected);
 			Orders order = new Orders();
 			//order.displayForID(currentCustomer.getID());
 			ids = orderServices.getAllOrderIDs(currentCustomer.getID());
@@ -705,7 +705,7 @@ public class MainMenu
 	    	
 	    	order.setOrder_id(ids.get((selectOption - 1)));
 	    	order.setCustomer_id(currentCustomer.getID());
-			orderServices =  new OrderServices(getConnected(), order);
+			orderServices =  new OrderServices(getConnected, order);
 			
 				
 	    	orderServices.Delete();
