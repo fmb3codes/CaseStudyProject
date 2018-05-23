@@ -41,6 +41,9 @@ public class PaymentTypes {
 	public String toString() {
 		return "PaymentTypes [PT_ID=" + PT_ID + ", PaymentName=" + PaymentName + "]";
 	}
+	
+	public PaymentTypes()
+	{}
 	/**
 	 * @param pT_ID
 	 * @param paymentName

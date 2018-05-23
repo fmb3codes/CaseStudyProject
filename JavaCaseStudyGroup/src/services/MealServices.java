@@ -8,12 +8,19 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import classes.DatabaseConnection;
 import classes.Meal;
 import interfaces.ServiceOperations;
 
 public class MealServices implements ServiceOperations {
+	
+	private DatabaseConnection db_connection;
+	private String name;
+	
+	private void setDatabaseConnection(DatabaseConnection db) {this.db_connection = db;}
+	private void setName(String name) 	  				  {this.name = name;}
 	
 	public static void main(String[] args) {
 		
@@ -39,9 +46,16 @@ public class MealServices implements ServiceOperations {
 		service.displayRecords();
 		
 	}
+	
+	public MealServices()
+	{
+		
+	}
 
-	public MealServices() {
-		// TODO Auto-generated constructor stub
+	public MealServices(DatabaseConnection db) 
+	{
+		this.setDatabaseConnection(db);
+		this.setName(name);
 	}
 	
 	public String findNextMealId() throws SQLException, Exception
@@ -334,6 +348,32 @@ public class MealServices implements ServiceOperations {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public ArrayList<String> getMeals() throws SQLException, Exception
+	{
+		ArrayList<String> ids = new ArrayList<String>();
+		int k = 0;
+		String format = "|%1$-3s|%2$-20s|%3$-75s|%4$-5s|\n";
+		ResultSet oraResult = db_connection
+				.getStatement()
+				.executeQuery("SELECT M_ID, NAME, DESCRIPTION, PRICE FROM MEALS");
+		
+		System.out.format(format,"#","Name","Description","Price");
+		while(oraResult.next())
+		{
+			k++;
+			System.out.format(format,
+					k,
+					oraResult.getString(2),
+					oraResult.getString(3),
+					oraResult.getString(4)
+			);
+			ids.add(oraResult.getString(1));
+		}
+		
+		return ids;
 		
 	}
 	

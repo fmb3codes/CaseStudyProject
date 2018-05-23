@@ -62,6 +62,19 @@ public class OrderServices implements DatabaseServices
 		System.out.println("Procedure Executed");
 		System.out.println("A new order has been succesfully added");
 	}
+	
+	public String getOrderID(String id) throws SQLException, Exception
+	{
+		PreparedStatement oraPrepStmt = db_connection
+				.getConnection()
+				.prepareStatement("SELECT TEMP.O_ID FROM (SELECT O.*, ROW_NUMBER() "
+						+ "OVER (ORDER BY O.O_ID DESC) R FROM ORDERS O) TEMP "
+						+ "WHERE R=1 AND C_ID=?");
+		oraPrepStmt.setString(1, id);
+		ResultSet result = oraPrepStmt.executeQuery();
+		result.next();
+		return result.getString(1);
+	}
 
 	@Override
 	public void Update() throws SQLException, Exception {
