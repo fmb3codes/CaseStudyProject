@@ -30,7 +30,13 @@ public class Orders
 	
 	//Getters
 	
-	public String getOrder_id() 		 {return order_id;}
+	public String getOrder_id(){
+		
+		
+		return order_id;
+		
+	}
+	
 	public String getCustomer_id() 		 {return customer_id;}
 	public String getOrder_date()  		 {return order_date;}
 	public String getOrder_status() 	 {return order_status;}

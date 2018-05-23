@@ -9,4 +9,5 @@ public interface DatabaseServices
 	public void Delete() throws SQLException, Exception;
 	public void GetAll() throws SQLException, Exception;
 	public void Find() throws SQLException, Exception;
+	
 }

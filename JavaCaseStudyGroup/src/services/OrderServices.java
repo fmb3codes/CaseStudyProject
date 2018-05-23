@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import classes.DatabaseConnection;
 import classes.Orders;
@@ -28,6 +29,12 @@ public class OrderServices implements DatabaseServices
 	{
 		this.setDatabaseConnection(db);
 		this.setOrder(order);
+	}
+	
+	public OrderServices(DatabaseConnection db)
+	{
+		this.setDatabaseConnection(db);
+		
 	}
 	
 	
@@ -75,17 +82,17 @@ public class OrderServices implements DatabaseServices
 		
 	}
 
-	@Override
-	public void Delete() throws SQLException, Exception
-	{
-		CallableStatement oraCallStmt = db_connection
-		.getConnection()
-		.prepareCall("{call SP_DELETE_ORDER(?)}");
-
-		oraCallStmt.setString(1, order.getOrder_id());
-		oraCallStmt.execute();
-		System.out.println("Order " + order.getOrder_id() + " has been succesfully deleted");
-	}
+//	@Override
+//	public void Delete(int selectOption) throws SQLException, Exception
+//	{
+//		CallableStatement oraCallStmt = db_connection
+//		.getConnection()
+//		.prepareCall("{call SP_DEL_NEW_Order(?)}");
+//
+//		oraCallStmt.setLong(1, selectOption);
+//		oraCallStmt.execute();
+//		System.out.println("Order " + selectOption + " has been succesfully deleted");
+//	}
 
 	@Override
 	public void GetAll() throws SQLException, Exception 
@@ -217,6 +224,46 @@ public class OrderServices implements DatabaseServices
 			}
 			
 		}
+
+		@Override
+		public void Delete() throws SQLException, Exception 
+		{
+			CallableStatement oraCallStmt = db_connection
+					.getConnection()
+					.prepareCall("{call SP_DEL_NEW_Order(?,?)}");
+
+					oraCallStmt.setString(1, order.getOrder_id());
+					oraCallStmt.setString(2, order.getCustomer_id());
+					oraCallStmt.execute();
+					System.out.println("Order " + order.getOrder_id() + " has been succesfully deleted");
+			
+		}
+
+		public ArrayList<String> getAllOrderIDs(String id) throws SQLException, Exception
+		{
+			ArrayList<String> ids = new ArrayList<String>();
+			int k = 0;
+
+			PreparedStatement oraResult = db_connection
+					.getConnection()
+					.prepareStatement("SELECT O_ID, DELIVERY_DATE, ORDER_ON_HOLD FROM ORDERS"
+							+ " WHERE C_ID = ? ");
+			oraResult.setString(1, id);
+			ResultSet result = oraResult.executeQuery();
+			
+
+			while(result.next())
+			{
+				k++;
+				System.out.println(k + " " + result.getString(2) + result.getString(3));
+				ids.add(result.getString(1));
+			}
+				
+			
+			return ids;
+		}
+
+		
 	
 
 }
