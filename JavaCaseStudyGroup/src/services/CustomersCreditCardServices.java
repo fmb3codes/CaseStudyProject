@@ -171,9 +171,15 @@ public class CustomersCreditCardServices implements DatabaseServices
 		oraPrepStmt.setString(1, id);
 		ResultSet oraResult = oraPrepStmt.executeQuery();
 		
-		System.out.format(format,"#","Name","Credit Card","Type");
+		
 		while(oraResult.next())
 		{
+			if(k == 0)
+			{
+				System.out.println("Please select card:");
+				System.out.format(format,"#","Name","Credit Card","Type");
+			}
+			
 			k++;
 			System.out.format(format,
 					k,

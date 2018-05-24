@@ -286,7 +286,7 @@ public class MainMenu
 		
 	}
 	
-	private static void addCreditCard() 
+	private static int addCreditCard() 
 	{
 		ArrayList<String> ids = new ArrayList<String>();
 		ArrayList<Integer> selection = new ArrayList<Integer>();
@@ -345,6 +345,12 @@ public class MainMenu
 			{
 				e.printStackTrace();
 			}
+			
+			
+			System.out.println("You have succesfully added a new credit card");
+			input.nextLine();
+			input.nextLine();
+			return 1;
 
 		}while(true);
 		
@@ -398,7 +404,6 @@ public class MainMenu
 					ids = cls.getAddresses();
 				}
 					
-				
 				for(int i = 1; i <= ids.size(); i++)
 					selection.add(i);
 				
@@ -411,12 +416,7 @@ public class MainMenu
 				
 				order.setCustomer_location(ids.get((selected - 1)));
 				order.setCustomer_id(currentCustomer.getID());
-//				order.setOrder_status("1000001");  //to be as default
-//				order.setOrder_on_hold(false); //to be as default
-//				order.setTimes_changes(0); //to be as default
-//				order.setOrder_date(today); //to be as default
-				
-				
+								
 				//creates the order in orders table
 				os.Create();
 				
@@ -471,7 +471,16 @@ public class MainMenu
 						
 						CustomersCreditCards ccc = new CustomersCreditCards();
 						CustomersCreditCardServices cccs = new CustomersCreditCardServices(getConnected);
+						
+						
 						ids = cccs.getAllCreditCards(currentCustomer.getID());
+						
+						if(ids.isEmpty())
+						{
+							addCreditCard();
+							ids = cccs.getAllCreditCards(currentCustomer.getID());
+						}
+							
 						for(int i = 1; i <= ids.size(); i++)
 							selection.add(i);
 						
@@ -501,7 +510,6 @@ public class MainMenu
 					break;
 				}
 				
-				//input.nextLine();
 				System.out.println("A new meal has been successfully placed");
 				System.out.println("Press enter to go back");
 				input.nextLine();
@@ -680,6 +688,7 @@ public class MainMenu
 			}
 			
 			System.out.println("you have success added an address");
+			input.nextLine();
 			return 1;
 			
 //			input.nextLine(); //flushes any leftover characters such as carriage return
