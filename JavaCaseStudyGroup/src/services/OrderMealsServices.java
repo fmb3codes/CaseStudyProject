@@ -140,7 +140,7 @@ public class OrderMealsServices implements ServiceOperations
 		}
 
 		
-		System.out.println("\nQuery Successful");
+		//System.out.println("\nQuery Successful");
 		
 		try {
 			site.getConnection().close();

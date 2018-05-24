@@ -173,7 +173,7 @@ public class MainMenu
 			String email = (String) fields.get(0);
 			String password = (String) fields.get(1);
 			
-			System.out.println("email is: " + email + " and password is: " + password);
+			//System.out.println("email is: " + email + " and password is: " + password);
 			
 			Customer customerCheck = custService.customerExists(email, password); // could also just directly assign to currentCustomer
 			
@@ -225,7 +225,7 @@ public class MainMenu
 					viewMenu();
 					break;
 				case 3:
-					//updateMenu();
+					updateMenu();
 					break;
 				case 4:
 					deleteMenu();
@@ -648,10 +648,12 @@ public class MainMenu
 			System.out.println("*****************************");
 	    	System.out.println("What would you like to delete?");
 	    	System.out.println("*****************************");
+	    	System.out.println("*                           *");
 	    	System.out.println("* 1. Order                  *");
 	    	System.out.println("* 2. Address                *");
 	    	System.out.println("* 3. Credit Card            *");
 	    	System.out.println("* 4. Selection Menu         *");
+	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
 	    	
 			System.out.print("Please select an option # ");
@@ -888,7 +890,9 @@ public class MainMenu
 	public static int viewOrdersToUpdate()
 	{
 		OrderServices orderService = new OrderServices();
-		//orderService.displayForIDToUpdate(currentCustomer.getID());
+		//TODO add way to parse order_on_hold field from 0/1 to readable format (on hold/active)
+		orderService.displayForIDToUpdate(currentCustomer.getID());
+
 		
 		return 1;
 	}
@@ -909,8 +913,10 @@ public class MainMenu
 			System.out.println("*****************************");
 	    	System.out.println("What would you like to do?   ");
 	    	System.out.println("*****************************");
+	    	System.out.println("*                           *");
 	    	System.out.println("* 1. Order Details          *");
 	    	System.out.println("* 2. View Menu              *");
+	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
 	    	
 			System.out.print("Please select an option # ");
@@ -976,12 +982,12 @@ public class MainMenu
 	    	System.out.println("What would you like to update?  ");
 	    	System.out.println("********************************");
 	    	System.out.println("*                              *");
-	    	System.out.println("* 1. Address                   *");
-	    	System.out.println("* 2. Orders                    *");
-	    	System.out.println("* 3. Credit Cards              *");
-	    	System.out.println("* 5. Selection Menu            *");
+	    	System.out.println("* 1. Order                     *");
+	    	System.out.println("* 2. Address                   *");
+	    	System.out.println("* 3. Credit Card               *");
+	    	System.out.println("* 4. Selection Menu            *");
 	    	System.out.println("*                              *");
-	    	System.out.println("*****************************");
+	    	System.out.println("********************************");
 	    	
 			System.out.print("Please select an option # ");
 			menuOption = input.nextInt();
@@ -989,27 +995,139 @@ public class MainMenu
 			switch(menuOption)
 			{
 				case 1:
-					updateAddress();
+					viewOrdersToUpdate(); // should only be called/orders displayed if customer has any orders
+					//pressToContinue();
+					updateOrders();
 					break;
 				case 2:
-					
+					updateAddress();
 					break;
 				case 3:
-					
+					//updateCreditCards();
 					break;
 				case 4:
-	
-					break;
-				case 5:
 					return 1;
 				default:
-					System.out.println("Please enter 1 or 2");
+					System.out.println("Please enter 1, 2, 3, or 4");
 					break;
 			}
 			
 		}while(true);
 	}
 	
+	private static void updateOrders() {
+		OrderServices orderService = new OrderServices();
+		
+		// should check if customer has any orders and immediately break out if so, or handle this higher up
+		
+		
+		int menuOption;
+		
+		List fields = new ArrayList(); 
+		fields.add("Which order would you like to update? (Please enter the ID): ");
+		
+		int counter = 0;
+		
+		//Scanner scnr = new Scanner(System.in);
+		
+		while (counter < fields.size())
+		{
+			System.out.print(fields.get(counter));
+			String user_input = input.next(); // is .next() good enough?
+			
+			// validation on proper order number here
+			if(user_input.length() > 0){ // could do boolean validation check here
+				
+				// validate 
+				if (orderService.orderExists(user_input) == 1)
+				{
+					fields.set(counter, user_input);
+					counter++;
+				}
+				else
+				{
+					System.out.println("Invalid order number. Please re-enter the order number to update");
+					continue; // used for readability only, not necessary
+				}
+			}
+			
+		}
+		
+		String order_id = (String) fields.get(0);
+		
+		String item_to_update = "";
+
+		do {
+			System.out.println("********************************");
+	    	System.out.println("Order update options            ");
+			System.out.println("********************************");
+	    	System.out.println("*                              *");
+	    	System.out.println("* 1. Change delivery date      *");
+	    	System.out.println("* 2. Pause/unpause order       *"); // check if paused/on hold, and "flip" value
+	    	System.out.println("*                              *");
+	    	System.out.println("********************************");
+			System.out.print("Please select an option #: ");
+			menuOption = input.nextInt();
+			
+			switch(menuOption)
+			{
+				case 1:
+					item_to_update = "DELIVERY_DATE";
+					break;
+				case 2:
+					item_to_update = "ORDER_ON_HOLD";
+					break;
+				default:
+					System.out.println("Please enter 1, or 2");
+					break;
+			}
+			
+			break;
+		}while(true);
+		
+		
+		if (item_to_update.equals("ORDER_ON_HOLD")) // flip to opposite value
+		{
+			orderService.updateOrderHold(order_id);
+			
+		}
+		
+		else
+		{
+			counter = 0;
+			
+			fields.set(counter, "Please enter the new delivery date in the form dd-mm-yyyy: ");
+			
+			
+			//Scanner scnr = new Scanner(System.in);
+			
+			while (counter < fields.size())
+			{
+				System.out.print(fields.get(counter));
+				String user_input = input.next(); // is .next() good enough?
+				
+				// validation on proper delivery date here
+				if(user_input.length() > 0){ // could do boolean validation check here
+					
+					// validate 
+					fields.set(counter, user_input);
+					counter++;
+				}
+				
+			}
+			
+			String new_delivery_date = (String) fields.get(0); // at this point it should be validated as a proper delivery date
+			
+			orderService.updateDeliveryAddress(order_id, new_delivery_date); // didn't need to initialize object since method is static
+		}
+		
+		
+		System.out.println("Update successful");
+		
+	}
+
+	
+
 	public static void updateAddress()
 	{
 		
@@ -1020,7 +1138,7 @@ public class MainMenu
 		{
 			try
 	        {
-				System.out.println("Press the Enter key to continue");
+				System.out.println("\nPress the Enter key to continue");
 	            System.in.read();
 	        }  
 	        catch(Exception e)
