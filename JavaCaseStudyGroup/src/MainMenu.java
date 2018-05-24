@@ -826,9 +826,9 @@ public class MainMenu
 			System.out.println(e.getMessage());
 		}
 	
-		input.nextLine();
-		System.out.println("\nPress enter to go back");
-		input.nextLine();
+		//input.nextLine();
+		//System.out.println("\nPress enter to go back");
+		//input.nextLine();
 		return 1;    
 	}  
 	
@@ -945,10 +945,10 @@ public class MainMenu
 					updateOrders();
 					break;
 				case 2:
-					updateAddress();
+					updateAddress(); // TODO
 					break;
 				case 3:
-					//updateCreditCards();
+					//updateCreditCards(); // TODO
 					break;
 				case 4:
 					return 1;
