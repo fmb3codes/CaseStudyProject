@@ -393,7 +393,7 @@ public class OrderServices implements DatabaseServices
 				}
 				
 				fw.write("\r\n--------------------------------------------\r\n");
-				fw.write("|             Created by Syntinels          |\r\n");
+				fw.write("|             Created by Syntinels         |\r\n");
 				fw.write("--------------------------------------------\r\n");
 				
 				fw.close();
