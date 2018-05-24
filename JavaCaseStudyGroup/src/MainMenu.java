@@ -687,7 +687,67 @@ public class MainMenu
 		}while(true);
 		
 	}
-	
+	/*
+	private static void deleteAddress() {
+		ArrayList<String> ids = new ArrayList<String>();
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		int locOp = 0;
+		
+		int selectOption;
+		input.nextLine();
+		do
+		{
+
+			try {
+				LocationTypeServices LocServices = new LocationTypeServices(getConnected);
+				Locations Loc = new Locations();
+			//order.displayForID(currentCustomer.getID());
+			ids = LocationTypeServices.getAllLocationTypeID(currentCustomer.getID());
+			for(String i : ids)
+			{
+				locOp++;
+				selection.add(locOp);
+			}
+			
+			
+	    	do
+			{
+				System.out.print("Enter your order number ");
+				selectOption = input.nextInt();
+				
+			}while(!selection.contains((selectOption)));
+	    	
+	    	Loc.setCustomerID(ids.get((selectOption - 1)));
+	    	Loc.setLocationTypeID(currentCustomer.getID());
+	    	LocServices =  new LocationTypeServices(getConnected, Loc );
+			
+				
+	    	LocServices.Delete();
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			/*{
+				CallableStatement oraCallStmt = db_connection.getConnection()
+				.prepareCall("{call SP_DELETE_ORDER(?)}");
+				DatabaseConnection db = new DatabaseConnection();
+
+				oraCallStmt.setString(1, order.getOrder_id);
+				oraCallStmt.execute();
+				System.out.println("Order " + order.getOrder_id() + " has been succesfully deleted");
+			} 
+
+			
+		}while(true);
+	}	
+	*/
+
 	public static int addNewAddress() 
 	{
 
@@ -865,11 +925,67 @@ public class MainMenu
 		}while(true);
 	}
 		
-		
+	/*	
 	public void deleteCustomerLocation()
 	{
+		ArrayList<String> ids = new ArrayList<String>();
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		int locOp = 0;
 		
+		int selectOption;
+		input.nextLine();
+		do
+		{
+
+			try {
+				CustomerLocationServices LocCustServices = new CustomerLocationServices(getConnected);
+				CustomerLocations cusLoc = new CustomerLocations();
+			//order.displayForID(currentCustomer.getID());
+			ids = CustomerLocationServices.GetAll(currentCustomer.getID());
+			for(String i : ids)
+			{
+				locOp++;
+				selection.add(locOp);
+			}
+			
+			
+	    	do
+			{
+				System.out.print("Enter your order number ");
+				selectOption = input.nextInt();
+				
+			}while(!selection.contains((selectOption)));
+	    	
+	    	cusLoc.setCustomerID(ids.get((selectOption - 1)));
+	    	cusLoc.setLocationTypeID(currentCustomer.getID());
+	    	LocCustServices =  new CustomerLocationServices(getConnected, cusLoc );
+			
+				
+	    	LocCustServices.Delete();
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			/*{
+				CallableStatement oraCallStmt = db_connection.getConnection()
+				.prepareCall("{call SP_DELETE_ORDER(?)}");
+				DatabaseConnection db = new DatabaseConnection();
+
+				oraCallStmt.setString(1, order.getOrder_id);
+				oraCallStmt.execute();
+				System.out.println("Order " + order.getOrder_id() + " has been succesfully deleted");
+			} 
+
+			
+		}while(true);
 	}
+		*/
 	
 	public static int viewMeals()     
 	{    
