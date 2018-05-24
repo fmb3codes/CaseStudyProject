@@ -1,5 +1,6 @@
 package services;
 
+import classes.Customer;
 import classes.CustomerLocations;
 import classes.DatabaseConnection;
 import interfaces.DatabaseServices;
@@ -15,6 +16,7 @@ public class CustomerLocationServices implements DatabaseServices
 {
 	private static DatabaseConnection db_connection;
 	private CustomerLocations customerLocation;
+	private Customer customer;
 	
 	//Constructor
 	public CustomerLocationServices()
@@ -32,6 +34,13 @@ public class CustomerLocationServices implements DatabaseServices
 		this.setDatabaseConnection(db);
 		this.setCustomerLocation(customerLocation);
 	}
+	
+	public CustomerLocationServices(DatabaseConnection db, Customer customer)
+	{
+		this.setDatabaseConnection(db);
+		this.customer = customer;
+	}
+	
 	
 	//Setters
 	
@@ -172,13 +181,21 @@ public class CustomerLocationServices implements DatabaseServices
 		ArrayList<String> ids = new ArrayList<String>();
 		int k = 0;
 		String format = "|%1$-3s|%2$-50s|%3$-20s|%4$-7s|\n";
-		ResultSet oraResult = db_connection
-				.getStatement()
-				.executeQuery("SELECT CL_ID, STREET_ADDRESS, CITY, ZIP_CODE FROM CUSTOMERS_LOCATIONS");
+		PreparedStatement oraPrepStmt = db_connection
+				.getConnection()
+				.prepareStatement("SELECT CL_ID, STREET_ADDRESS, CITY, ZIP_CODE FROM CUSTOMERS_LOCATIONS"
+						+ " WHERE C_ID = ?");
+		oraPrepStmt.setString(1, customer.getID());
+		ResultSet oraResult = oraPrepStmt.executeQuery();
 		
-		System.out.format(format,"#","Street","City","Zip Code");
 		while(oraResult.next())
 		{
+			if(k == 0)
+			{
+				System.out.println("Where would you like the order to be delivered?");
+				System.out.format(format,"#","Street","City","Zip Code");
+			}
+				
 			k++;
 			System.out.format(format,
 					k,

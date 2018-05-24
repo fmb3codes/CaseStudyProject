@@ -112,10 +112,10 @@ public class MainMenu
 	    do
 	    {
 	    	System.out.println("*****************************");
-	    	System.out.println("Welcome to Mummy's Restaurant");
+	    	System.out.println("*         Guest Menu        *");
 	    	System.out.println("*****************************");
 	    	System.out.println("*                           *");
-	    	System.out.println("* 1. View Menu              *");
+	    	System.out.println("* 1. View Meals             *");
 	    	System.out.println("* 2. Main Menu              *");
 	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
@@ -152,12 +152,7 @@ public class MainMenu
 			List fields = new ArrayList(); 
 			fields.add("Please enter your email: ");
 			fields.add("Please enter your password: ");
-
-			
 			int counter = 0;
-			
-
-			//Scanner scnr = new Scanner(System.in);
 			
 			while (counter < fields.size())
 			{
@@ -192,12 +187,7 @@ public class MainMenu
 			}
 			
 			else
-			{
 				System.out.println("Invalid combination, please re-enter your information");
-			}
-	    	
-
-	    	
 	    }while(true);
 		
 	}
@@ -210,19 +200,19 @@ public class MainMenu
 		do
 		{
 			
-			System.out.println("*****************************");
-	    	System.out.println("Welcome " + currentCustomer.getfName() + "");
-	    	System.out.println("*****************************");
-	    	System.out.println("*                           *");
-	    	System.out.println("* What would you like to do?*");
-	    	System.out.println("*                           *");
-	    	System.out.println("* 1. Add                    *");
-	    	System.out.println("* 2. View                   *");
-	    	System.out.println("* 3. Update                 *");
-	    	System.out.println("* 4. Delete                 *");
-	    	System.out.println("* 5. Main Menu              *");
-	    	System.out.println("*                           *");
-	    	System.out.println("*****************************");
+			System.out.println("********************************");
+	    	System.out.println("Welcome " + currentCustomer.getfName());
+	    	System.out.println("********************************");
+	    	System.out.println("*                              *");
+	    	System.out.println("* What would you like to do?   *");
+	    	System.out.println("*                              *");
+	    	System.out.println("* 1. Add                       *");
+	    	System.out.println("* 2. View                      *");
+	    	System.out.println("* 3. Update                    *");
+	    	System.out.println("* 4. Delete                    *");
+	    	System.out.println("* 5. Main Menu                 *");
+	    	System.out.println("*                              *");
+	    	System.out.println("********************************");
 	    	
 			System.out.print("Please select an option # ");
 			menuOption = input.nextInt();
@@ -241,7 +231,6 @@ public class MainMenu
 				case 4:
 					deleteMenu();
 					break;
-					
 				case 5:
 					return 1;
 				default:
@@ -361,7 +350,7 @@ public class MainMenu
 		
 	}
 
-	private static void addNewOrder() 
+	private static int addNewOrder() 
 	{
 		ArrayList<String> ids = new ArrayList<String>();
 		ArrayList<Integer> selection = new ArrayList<Integer>();
@@ -374,14 +363,13 @@ public class MainMenu
 			{
 				Orders order = new Orders();
 				OrderMeal om = new OrderMeal();
-				CustomerLocations cl = new CustomerLocations();
 				OrderServices os = new OrderServices(getConnected, order);
 				
 				MealServices ms = new MealServices(getConnected);
-				CustomerLocationServices cls = new CustomerLocationServices(getConnected);
+				CustomerLocationServices cls = new CustomerLocationServices(getConnected, currentCustomer);
 				OrderMealsServices oms = new OrderMealsServices(getConnected);
 				ids = ms.getMeals();
-				for(int i = 0; i < ids.size(); i++)
+				for(int i = 1; i <= ids.size(); i++)
 					selection.add(i);
 		
 				do
@@ -400,14 +388,20 @@ public class MainMenu
 				om.setQty(input.nextInt());
 				
 				input.nextLine();
-				System.out.println("What day would you like the order to be delivered?");
+				System.out.println("What day would you like the order to be delivered? (dd-mm-yyyy)");
 				order.setDelivery_date(input.nextLine());
 				
-				input.nextLine();
-				System.out.println("Where would you like the order to be delivered?");
 				ids = cls.getAddresses();
-				for(int i = 0; i < ids.size(); i++)
+				if(ids.isEmpty())
+				{
+					addNewAddress();
+					ids = cls.getAddresses();
+				}
+					
+				
+				for(int i = 1; i <= ids.size(); i++)
 					selection.add(i);
+				
 				do
 				{
 					System.out.print("choose address: ");
@@ -417,10 +411,10 @@ public class MainMenu
 				
 				order.setCustomer_location(ids.get((selected - 1)));
 				order.setCustomer_id(currentCustomer.getID());
-				order.setOrder_status("1000001");  //to be as default
-				order.setOrder_on_hold(false); //to be as default
-				order.setTimes_changes(0); //to be as default
-				order.setOrder_date(today); //to be as default
+//				order.setOrder_status("1000001");  //to be as default
+//				order.setOrder_on_hold(false); //to be as default
+//				order.setTimes_changes(0); //to be as default
+//				order.setOrder_date(today); //to be as default
 				
 				
 				//creates the order in orders table
@@ -431,21 +425,17 @@ public class MainMenu
 				om.setOrderID(os.getOrderID(currentCustomer.getID()));
 				oms.create(om);
 				
-				
 				input.nextLine();
 				System.out.println("How would you like to pay this order");
+				
 				ids.clear();
 				selection.clear();
+				
 				PaymentTypes pt = new PaymentTypes();
 				PaymentTypeServices pts = new PaymentTypeServices(getConnected);
 				ids = pts.getPaymentType();
-
-				k = 0;
-				for(String i : ids)
-				{
-					k++;
-					selection.add(k);
-				}
+				for(int i = 1; i <= ids.size(); i++)
+					selection.add(i);
 					
 				do
 				{
@@ -458,12 +448,10 @@ public class MainMenu
 				ids.clear();
 				selection.clear();
 				
-				switch((selected-1))
+				switch((selected))
 				{
 					//cash
-					case 0:
-						System.out.println("In case 1");
-						
+					case 1:
 						//insert into payments
 						Payments p = new Payments();
 						p.setOrderID(om.getOrderID());
@@ -473,28 +461,19 @@ public class MainMenu
 						break;
 						
 					//credit card
-					case 1:
-						System.out.println("In case 2");
-						
+					case 2: 
 						//insert into payments
 						Payments p2 = new Payments();
 						p2.setOrderID(om.getOrderID());
 						p2.setPaymentType(pt.getPT_ID());
 						PaymentServices ps2 = new PaymentServices(getConnected,p2);
-						
 						ps2.Create();
-						
-						k = 0;
 						
 						CustomersCreditCards ccc = new CustomersCreditCards();
 						CustomersCreditCardServices cccs = new CustomersCreditCardServices(getConnected);
 						ids = cccs.getAllCreditCards(currentCustomer.getID());
-						
-						for(String i : ids)
-						{
-							k++;
-							selection.add(k);
-						}
+						for(int i = 1; i <= ids.size(); i++)
+							selection.add(i);
 						
 						do
 						{
@@ -517,11 +496,17 @@ public class MainMenu
 						ccd.setCC_ID(ccc.getCC_ID());
 						
 						CreditCardDetailServices ccds = new CreditCardDetailServices(getConnected, ccd);
-						
 						ccds.Create();
 				
-						break;
+					break;
 				}
+				
+				//input.nextLine();
+				System.out.println("A new meal has been successfully placed");
+				System.out.println("Press enter to go back");
+				input.nextLine();
+				
+				return 1;
 						
 				
 			} catch (SQLException e) 
@@ -633,7 +618,7 @@ public class MainMenu
 		
 	}
 	
-	public static void addNewAddress() 
+	public static int addNewAddress() 
 	{
 
 		ArrayList<String> ids = new ArrayList<String>();
@@ -642,7 +627,7 @@ public class MainMenu
 		int locOp = 0;
 
 		int selected;
-		input.nextLine(); //flushes any leftover characters such as carriage return
+		//input.nextLine(); //flushes any leftover characters such as carriage return
 		
 		do
 		{
@@ -694,16 +679,19 @@ public class MainMenu
 				System.out.println(e.getMessage());
 			}
 			
-			input.nextLine(); //flushes any leftover characters such as carriage return
-			System.out.println("Would you like to add another address");
-			input.nextLine();
+			System.out.println("you have success added an address");
+			return 1;
+			
+//			input.nextLine(); //flushes any leftover characters such as carriage return
+//			System.out.println("Would you like to add another address");
+//			input.nextLine();
 			
 		}while(true);	
 	}
 	
 	public static void customerRegistration()
 	{
-		List fields = new ArrayList(); 
+		List<String> fields = new ArrayList(); 
 		fields.add("First name");
 		fields.add("Last name");
 		fields.add("Email");
@@ -711,11 +699,7 @@ public class MainMenu
 		fields.add("Mobile number");
 		fields.add("Home number");
 
-		
 		int counter = 0;
-		
-
-		//Scanner scnr = new Scanner(System.in);
 		
 		while (counter < fields.size())
 		{
@@ -738,13 +722,13 @@ public class MainMenu
 		
 		// after reading in values, need to insert into table
         Customer newCust = new Customer();
-        newCust.setfName((String) fields.get(0)); // note indices not in insertion order
-        newCust.setlName((String) fields.get(1));
-        newCust.setPassword((String) fields.get(3));
+        newCust.setfName(fields.get(0)); // note indices not in insertion order
+        newCust.setlName(fields.get(1));
+        newCust.setPassword(fields.get(3));
         newCust.setLastLogin(newCust.getCurrentTimeStamp()); // should be able to set to null
-        newCust.setEmail((String) fields.get(2));
-        newCust.setHomeNumber(Integer.parseInt((String) fields.get(4)));
-        newCust.setMobileNumber(Integer.parseInt((String) fields.get(5)));
+        newCust.setEmail(fields.get(2));
+        newCust.setHomeNumber(Integer.parseInt(fields.get(4)));
+        newCust.setMobileNumber(Integer.parseInt(fields.get(5)));
         
         CustomerServices custService = new CustomerServices();
         custService.insertToDB(newCust);
@@ -823,26 +807,24 @@ public class MainMenu
 	
 	public static int viewMeals()     
 	{    
-			// potentially add a check to see if there are no meals, in which case a message is displayed accordingly    
-			// not doing this in displayRecords since admins may call same function and the message might be different    
-			try
-			{
-				MealServices mealService = new MealServices(getConnected);    
-				mealService.getMeals();
-			}catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		
-			input.nextLine();
-			System.out.println("\nPress enter to go back");
-			input.nextLine();
-			return 1;    
+		try
+		{
+			MealServices mealService = new MealServices(getConnected);    
+			mealService.getMeals();
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	
+		input.nextLine();
+		System.out.println("\nPress enter to go back");
+		input.nextLine();
+		return 1;    
 	}  
 	
 	public static int viewOrdersToUpdate()
 	{
 		OrderServices orderService = new OrderServices();
-		orderService.displayForIDToUpdate(currentCustomer.getID());
+		//orderService.displayForIDToUpdate(currentCustomer.getID());
 		
 		return 1;
 	}
@@ -908,7 +890,6 @@ public class MainMenu
 		
 		// do cls here or outside?
 		return 1;
-		
 	}
 	
 	public static int viewCreditCards() 
