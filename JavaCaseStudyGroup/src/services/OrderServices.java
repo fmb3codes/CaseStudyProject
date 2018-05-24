@@ -7,8 +7,12 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.io.FileWriter;
 
+import classes.Customer;
 import classes.DatabaseConnection;
 import classes.Orders;
 import interfaces.DatabaseServices;
@@ -17,6 +21,11 @@ public class OrderServices implements DatabaseServices
 {
 	private DatabaseConnection db_connection;
 	private Orders order;
+	private Customer customer;
+	
+	final static SimpleDateFormat fDate = new SimpleDateFormat("dd-MM-yyyy");
+	final static Date now = new Date();
+	final static String today = fDate.format(now);
 	
 	//Constructor
 	
@@ -29,6 +38,13 @@ public class OrderServices implements DatabaseServices
 	{
 		this.setDatabaseConnection(db);
 		this.setOrder(order);
+	}
+	
+	public OrderServices(DatabaseConnection db, Orders order, Customer customer)
+	{
+		this.setDatabaseConnection(db);
+		this.setOrder(order);
+		this.customer = customer;
 	}
 	
 	public OrderServices(DatabaseConnection db)
@@ -342,6 +358,57 @@ public class OrderServices implements DatabaseServices
 				
 			
 			return ids;
+		}
+
+		public void produceInvoice() throws SQLException, Exception
+		{
+			String filename = order.getOrder_id() + "_" + today;
+			String details = "";
+			PreparedStatement oraResult = db_connection
+					.getConnection()
+					.prepareStatement("SELECT O.DELIVERY_DATE, M.NAME, M.DESCRIPTION, M.PRICE, OS.NAME, PT.PAYMENT_NAME FROM MEALS M "
+							+ "JOIN ORDER_MEALS OM "
+							+ "ON M.M_ID = OM.M_ID "
+							+ "JOIN ORDERS O "
+							+ "ON OM.O_ID = O.O_ID "
+							+ "JOIN ORDER_STATUS OS "
+							+ "ON O.OS_ID = OS.OS_ID "
+							+ "JOIN PAYMENTS P "
+							+ "ON P.O_ID = O.O_ID "
+							+ "JOIN PAYMENT_TYPES PT "
+							+ "ON P.PT_ID = PT.PT_ID "
+							+ "WHERE O.O_ID = ?");
+			
+			oraResult.setString(1, order.getOrder_id());
+			ResultSet result = oraResult.executeQuery();
+			
+			try
+			{
+				FileWriter fw = new FileWriter("C:\\invoices\\"+ filename + ".txt");
+				fw.write("--------------------------------------------\r\n");
+				fw.write("|             Mummy's Restaurant           |\r\n");
+				fw.write("--------------------------------------------\r\n");
+				
+				fw.write("Order #:" + order.getOrder_id() + "\r\n");
+				fw.write("Customer: " + customer.getfName() + "\r\n");
+				fw.write("--------------------------------------------\r\n");
+				while(result.next())
+				{
+					details += "Delivery date: " + result.getString(1) + "\r\n" + result.getString(2) + " Price: $" + result.getString(4) + "\r\n" + result.getString(3) + "\r\nStatus: " + result.getString(5) + "\r\nPaid with: " + result.getString(6);
+					fw.write(details);
+				}
+				
+				fw.write("\r\n--------------------------------------------\r\n");
+				fw.write("|             Created by Syntinels          |\r\n");
+				fw.write("--------------------------------------------\r\n");
+				
+				fw.close();
+				
+				
+			}catch(Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
 		}
 
 		
