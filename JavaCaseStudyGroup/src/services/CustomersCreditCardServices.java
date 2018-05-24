@@ -113,23 +113,12 @@ public class CustomersCreditCardServices implements DatabaseServices
 			
 			
 			while (oracleRs.next()) {
-				//System.out.println(oracleRs.getString("first_name") + " " + oracleRs.getString(2) + " " + oracleRs.getInt("salary"));
-				//System.out.println(oracleRs.getString("*"));
-				
-				//System.out.println("Meta data is: ");
-				//System.out.println(oracleRs.getMetaData().getColumnCount());
-				
-				//ResultSetMetaData meta_data = oracleRs.getMetaData();
-				//int num_fields = meta_data.getColumnCount();
 				String[] col_fields = new String[num_fields];
-				//String[] col_names = new String[num_fields];
 				
 				for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
 				    col_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
-				    //col_names[i - 1] = meta_data.getColumnName(i);
 				}		
 				
-				//System.out.println(meal_fields);
 				System.out.println();
 				
 				for (String j:col_fields){
@@ -145,7 +134,7 @@ public class CustomersCreditCardServices implements DatabaseServices
 		}
 
 		
-		System.out.println("\nQuery Successful");
+		//System.out.println("\nQuery Successful");
 		
 		try {
 			site.getConnection().close();
@@ -171,9 +160,15 @@ public class CustomersCreditCardServices implements DatabaseServices
 		oraPrepStmt.setString(1, id);
 		ResultSet oraResult = oraPrepStmt.executeQuery();
 		
-		System.out.format(format,"#","Name","Credit Card","Type");
+		
 		while(oraResult.next())
 		{
+			if(k == 0)
+			{
+				System.out.println("Please select card:");
+				System.out.format(format,"#","Name","Credit Card","Type");
+			}
+			
 			k++;
 			System.out.format(format,
 					k,

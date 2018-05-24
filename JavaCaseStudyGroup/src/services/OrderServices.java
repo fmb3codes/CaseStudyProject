@@ -2,14 +2,19 @@ package services;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import classes.Customer;
 import classes.DatabaseConnection;
+import classes.Meal;
 import classes.Orders;
 import interfaces.DatabaseServices;
 
@@ -224,6 +229,76 @@ public class OrderServices implements DatabaseServices
 			}
 			
 		}
+		
+		public void displayForIDToUpdate(String custID) {
+			
+			DatabaseConnection site = new DatabaseConnection();
+			Connection con = site.getConnection();
+			
+						
+			try {
+				PreparedStatement oracleStmt = con.prepareStatement("Select O_ID as \"Order ID\", ORDER_DATE as \"Order Date\", DELIVERY_DATE as \"Delivery Date\", ORDER_ON_HOLD as \"Order Status\" from Orders, Order_Status where Orders.OS_ID=Order_Status.OS_ID AND Order_Status.NAME = 'PENDING' AND C_ID=?");
+				oracleStmt.setString(1, custID);
+				
+				
+				// NEED to parse order_on_hold to properly display status
+				
+				ResultSet oracleRs = oracleStmt.executeQuery();
+				
+				int num_fields = 0;
+				ResultSetMetaData meta_data;
+				
+				if (oracleRs != null) {
+					meta_data = oracleRs.getMetaData();
+					num_fields = meta_data.getColumnCount();
+					
+					String[] col_names = new String[num_fields];
+
+					
+					for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
+					    col_names[i - 1] = meta_data.getColumnName(i);
+					}	
+					
+					// add if statement to only print if a record was found
+					for (String j:col_names){
+						System.out.print("| " + j + " ");
+					}
+					
+				}
+				
+				
+				while (oracleRs.next()) {
+					String[] col_fields = new String[num_fields];
+						
+					for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
+					    col_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
+					}		
+					
+					System.out.println();
+					
+					for (String j:col_fields){
+						System.out.print("| " + j + " ");
+					}
+					
+				
+				}
+				
+			}
+			catch (Exception ex){
+				ex.printStackTrace();
+			}
+
+			
+			System.out.println("\nQuery Successful");
+			
+			try {
+				site.getConnection().close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 
 		@Override
 		public void Delete() throws SQLException, Exception 
@@ -264,8 +339,126 @@ public class OrderServices implements DatabaseServices
 		}
 
 		
+		public static void updateDeliveryAddress(String order_id, String new_delivery_date) { // deal with exception later
+			// do null check on input
+			
+		    DatabaseConnection site = new DatabaseConnection();
+			Connection con = site.getConnection();
+			
+			PreparedStatement oraclePreparedStmt;
+			try {
+				oraclePreparedStmt = con.prepareStatement("update" + " orders set DELIVERY_DATE=TO_DATE(?,'dd-MM-yyyy') WHERE O_ID=?");
+								
+				oraclePreparedStmt.setString(1,  new_delivery_date);
+				oraclePreparedStmt.setString(2,  order_id);
+				oraclePreparedStmt.execute(); // could change to executeUpdate?
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			try {
+				site.getConnection().close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			
+		}
+		
 	
 
-}
+		}
 
+		public void updateOrderHold(String order_id) {
+			// could potentially combine below queries into one using sub queries
+			DatabaseConnection site = new DatabaseConnection();
+			Connection con = site.getConnection();
+			
+			PreparedStatement oraclePreparedStmt;
+			try {
+				oraclePreparedStmt = con.prepareStatement("select order_on_hold from orders where O_ID=?");
+				
+				oraclePreparedStmt.setString(1,  order_id);
+				
+				ResultSet oracleRs = oraclePreparedStmt.executeQuery(); 
+
+				int order_hold = 0;
+				
+				while(oracleRs.next())
+				{
+					order_hold = oracleRs.getInt(1); // gets order hold value as int for easier manipulation
+				}
+				
+				order_hold = 1 - order_hold; // flips from 0 to 1 or vice versa
+				
+				oraclePreparedStmt = con.prepareStatement("update orders set order_on_hold=? where O_ID=?");
+				oraclePreparedStmt.setString(1,  Integer.toString(order_hold));
+				oraclePreparedStmt.setString(2,  order_id);
+				oraclePreparedStmt.execute();
+	
+				
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+			try {
+				site.getConnection().close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			
+			
+		}
+		
+			
+}
+		
+		public int orderExists(String order_id) {
+			DatabaseConnection site = new DatabaseConnection();
+			Connection con = site.getConnection();
+			int order_exists = 0;
+			
+			//System.out.println("Getting here");
+			
+			try {
+				PreparedStatement oracleStmt = con.prepareStatement("Select COUNT(*) from Orders where o_id=?");
+
+				// change to prepared
+				//PreparedStatement stmt = con.prepareStatement("Select C_ID from Customers where email = ? and password = ?");
+				oracleStmt.setString(1, order_id);
+				//oracleRs.next();
+				
+				ResultSet oracleRs;
+				oracleRs = oracleStmt.executeQuery();
+				
+				
+				while(oracleRs.next()){
+					order_exists = oracleRs.getInt(1); // will be == 0 if order exists
+					
+					//custID = oracleRs.getInt(1);
+				}			
+				
+			}
+			catch (Exception ex){
+				ex.printStackTrace();
+			}
+			
+			//System.out.println("Query successful");
+			try {
+				site.getConnection().close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return order_exists;
+			
+		}
+		
+}
 

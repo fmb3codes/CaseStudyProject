@@ -1,4 +1,7 @@
 package classes;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import exceptions.OrderException;
 
 public class Orders 
@@ -13,8 +16,17 @@ public class Orders
 	private int times_changes;
 	private final int MINIMUM_ID_LENGTH = 7;
 	
+	final static SimpleDateFormat fDate = new SimpleDateFormat("dd-MM-yyyy");
+	final static Date now = new Date();
+	final static String today = fDate.format(now);
+	
 	//Constructor
-	public Orders() {}
+	public Orders() {
+		this.order_status = "1000001";  
+		this.order_on_hold = false; 
+		this.times_changes = 0; 
+		this.order_date = today; 
+	}
 	
 	public Orders(String customer_id, String order_date, String order_status, String customer_location,
 			String delivery_date, boolean order_on_hold, int times_changes) throws OrderException

@@ -104,7 +104,7 @@ public class MealServices implements ServiceOperations {
 		}
 		
 		
-		System.out.println("Meal inserted, hopefully");
+		//System.out.println("Meal inserted, hopefully");
 		try {
 			site.getConnection().close();
 		} catch (SQLException e) {
@@ -155,7 +155,7 @@ public class MealServices implements ServiceOperations {
 		//System.out.println(oracleRs);
 		//System.out.println(oracleRs.getFetchSize());
 		
-		System.out.println("Meal updated, hopefully");
+		//System.out.println("Meal updated, hopefully");
 		
 		try {
 			site.getConnection().close();
@@ -195,7 +195,7 @@ public class MealServices implements ServiceOperations {
 		
 		// check size of oracleRs return and mention if empty
 		
-		System.out.println("Query successful");
+		//System.out.println("Query successful");
 		try {
 			site.getConnection().close();
 		} catch (SQLException e) {
@@ -281,9 +281,7 @@ public class MealServices implements ServiceOperations {
 		
 		try {
 			Statement oracleStmt = con.createStatement();
-
-			
-			ResultSet oracleRs = oracleStmt.executeQuery("Select * from Meals");
+			ResultSet oracleRs = oracleStmt.executeQuery("Select M_ID as \"#\", NAME as \"Name\", DESCRIPTION as \"Description\", PRICE as \"Price\" from Meals");
 			
 			int num_fields = 0;
 			ResultSetMetaData meta_data;
@@ -308,20 +306,10 @@ public class MealServices implements ServiceOperations {
 			
 			
 			while (oracleRs.next()) {
-				//System.out.println(oracleRs.getString("first_name") + " " + oracleRs.getString(2) + " " + oracleRs.getInt("salary"));
-				//System.out.println(oracleRs.getString("*"));
-				
-				//System.out.println("Meta data is: ");
-				//System.out.println(oracleRs.getMetaData().getColumnCount());
-				
-				//ResultSetMetaData meta_data = oracleRs.getMetaData();
-				//int num_fields = meta_data.getColumnCount();
 				String[] meal_fields = new String[num_fields];
-				//String[] col_names = new String[num_fields];
 				
 				for (int i = 1; i <= num_fields; ++i) { // make iterator condition dynamic
 				    meal_fields[i - 1] = oracleRs.getString(i); // Or even rs.getObject()
-				    //col_names[i - 1] = meta_data.getColumnName(i);
 				}		
 				
 				//System.out.println(meal_fields);
@@ -340,7 +328,7 @@ public class MealServices implements ServiceOperations {
 		}
 
 		
-		System.out.println("\nQuery Successful");
+		//System.out.println("\nQuery Successful");
 		
 		try {
 			site.getConnection().close();
