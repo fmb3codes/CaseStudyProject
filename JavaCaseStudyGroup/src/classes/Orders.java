@@ -22,7 +22,7 @@ public class Orders
 	
 	//Constructor
 	public Orders() {
-		this.order_status = "1000001";  
+		this.order_status = "1000000";  
 		this.order_on_hold = false; 
 		this.times_changes = 0; 
 		this.order_date = today; 
