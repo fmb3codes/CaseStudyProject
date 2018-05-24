@@ -78,9 +78,7 @@ public class MainMenu
 	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
 	    	
-	    	
 	    	// need to handle input mismatch exception is user enters string/etc.
-
 	   
 	    	System.out.print("Please select an option # ");
 	    	menuOption = input.nextInt();
@@ -210,7 +208,8 @@ public class MainMenu
 	    	System.out.println("* 2. View                      *");
 	    	System.out.println("* 3. Update                    *");
 	    	System.out.println("* 4. Delete                    *");
-	    	System.out.println("* 5. Main Menu                 *");
+	    	System.out.println("* 5. Invoice                   *");
+	    	System.out.println("* 6. Main Menu                 *");
 	    	System.out.println("*                              *");
 	    	System.out.println("********************************");
 	    	
@@ -232,6 +231,9 @@ public class MainMenu
 					deleteMenu();
 					break;
 				case 5:
+					orderInvoice();
+					break;
+				case 6:
 					return 1;
 				default:
 					System.out.println("Please enter 1 - 5");
@@ -241,6 +243,64 @@ public class MainMenu
 		}while(true);
 	}
 	
+	private static int orderInvoice() 
+	{
+		
+		ArrayList<String> ids = new ArrayList<String>();
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		int selected;
+
+		do
+		{
+			try
+			{
+				Orders order = new Orders();
+				OrderServices orderService  = new OrderServices(getConnected);
+				ids = orderService.getAllOrderIDs(currentCustomer.getID());
+				if(ids.isEmpty())
+				{
+					System.out.println("No orders placed to produce an invoice");
+					return 1;
+				}
+				else
+				{
+					System.out.print("Please selected the order you wish to create an invoice: ");
+					for(int i = 1; i <= ids.size(); i++)
+						selection.add(i);
+					
+					do
+					{
+						System.out.print("Produce invoice for #: ");
+						selected = input.nextInt();
+						
+					}while(!selection.contains((selected)));
+					
+					order.setOrder_id(ids.get((selected-1)));
+					orderService = new OrderServices(getConnected, order, currentCustomer);
+					orderService.produceInvoice();
+					
+					
+					System.out.println("Invoice succesfully created");
+					System.out.println("Press enter to go back");
+					input.nextLine();
+					input.nextLine();
+					
+					return 1;
+				}
+				
+			}catch(Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+			
+			
+			
+			
+		}while(true);
+		
+		
+	}
+
 	public static int addMenu()
 	{
 		int menuOption;
@@ -746,11 +806,6 @@ public class MainMenu
 		
 	}
 	
-	public void insertNewOrder()
-	{
-		
-	}
-	
 	public static void deleteOrder(){	
 		ArrayList<String> ids = new ArrayList<String>();
 		ArrayList<Integer> selection = new ArrayList<Integer>();
@@ -1088,7 +1143,6 @@ public class MainMenu
 	        }  
 	        catch(Exception e)
 	        {
-	        	
 	        	System.out.println(e.getMessage());
 	        }  
 			break;
