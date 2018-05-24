@@ -85,7 +85,24 @@ public class CustomerLocationServices implements DatabaseServices
 	public void GetAll() throws SQLException, Exception
 	{
 		
-		
+
+		ResultSet oraResult = db_connection.getStatement().executeQuery("SELECT * FROM Customers_locations");
+		String format = "|%1$-3s|%2$-10s|%3$-10s|%4$-5s|%5$-3s|%6$-3s|%7$-3s|\n";
+		while(oraResult.next())
+		{
+			System.out.format(
+					format,
+					oraResult.getString("CL_ID"), 
+					oraResult.getString("LT_ID"), 
+					oraResult.getString("Street"),
+					oraResult.getString("city"),
+					oraResult.getString("state"),
+					oraResult.getString("country"),
+					oraResult.getString("zip code"),
+					oraResult.getString("C_ID") 
+
+			);
+		}
 		
 	}
 
