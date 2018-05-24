@@ -60,15 +60,11 @@ public class MainMenu
 	static Customer currentCustomer;
 	static DatabaseConnection getConnected;
 	
-	
-	
 	public static void main(String[] args) 
 	{
 		int menuOption;
 
 		getConnected();
-		
-		// double check; login stopped working
 		
 	    do
 	    {
@@ -78,6 +74,7 @@ public class MainMenu
 	    	System.out.println("*                           *");
 	    	System.out.println("* 1. Login                  *");
 	    	System.out.println("* 2. Register               *");
+	    	System.out.println("* 3. Guest                  *");
 	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
 	    	
@@ -97,14 +94,54 @@ public class MainMenu
 	    		case 2:
 	    			customerRegistration();
 	    			break;
+	    		case 3:
+	    			guestMenu();
+	    			break;
 	    		default:
-	    			System.out.println("Please enter 1 or 2");
+	    			System.out.println("Please enter 1, 2, 3");
 	    			break;
 	    	}
 	    	
 	    }while(true);
 	}
 	
+	private static int guestMenu() 
+	{
+		int menuOption;
+		
+	    do
+	    {
+	    	System.out.println("*****************************");
+	    	System.out.println("Welcome to Mummy's Restaurant");
+	    	System.out.println("*****************************");
+	    	System.out.println("*                           *");
+	    	System.out.println("* 1. View Menu              *");
+	    	System.out.println("* 2. Main Menu              *");
+	    	System.out.println("*                           *");
+	    	System.out.println("*****************************");
+	   
+	    	System.out.print("Please select an option # ");
+	    	menuOption = input.nextInt();
+	    	
+	    	switch(menuOption)
+	    	{
+	    		case 1:
+	    			viewMeals();
+	    			break;
+	    		case 2:
+	    			return 1;
+	    		default:
+	    			System.out.println("Please enter 1, 2, 3");
+	    			break;
+	    	}
+	    	
+	    	
+	    	
+	    }while(true);
+		
+		
+	}
+
 	public static int customerLoginValidation()
 	{
 		CustomerServices custService = new CustomerServices();
@@ -409,7 +446,6 @@ public class MainMenu
 				{
 					k++;
 					selection.add(k);
-					
 				}
 					
 				do
@@ -731,10 +767,6 @@ public class MainMenu
 
 			
 		}while(true);
-		
-		
-		
-
 	}
 		
 		
@@ -747,9 +779,17 @@ public class MainMenu
 	{    
 			// potentially add a check to see if there are no meals, in which case a message is displayed accordingly    
 			// not doing this in displayRecords since admins may call same function and the message might be different    
-			MealServices mealService = new MealServices();    
-			mealService.displayRecords();    
-			    
+			try
+			{
+				MealServices mealService = new MealServices(getConnected);    
+				mealService.getMeals();
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		
+			input.nextLine();
+			System.out.println("\nPress enter to go back");
+			input.nextLine();
 			return 1;    
 	}  
 	
@@ -905,7 +945,5 @@ public class MainMenu
 		DatabaseConnection db = new DatabaseConnection();
 		getConnected = db;
 	}
-	
-
 	
 }
