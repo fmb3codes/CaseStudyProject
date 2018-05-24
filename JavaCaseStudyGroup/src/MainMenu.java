@@ -96,7 +96,7 @@ public class MainMenu
 	    			guestMenu();
 	    			break;
 	    		default:
-	    			System.out.println("Please enter 1, 2, 3");
+	    			System.out.println("Please enter 1, 2, or 3");
 	    			break;
 	    	}
 	    	
@@ -129,7 +129,7 @@ public class MainMenu
 	    		case 2:
 	    			return 1;
 	    		default:
-	    			System.out.println("Please enter 1, 2, 3");
+	    			System.out.println("Please enter 1 or 2");
 	    			break;
 	    	}
 	    	
@@ -236,7 +236,7 @@ public class MainMenu
 				case 6:
 					return 1;
 				default:
-					System.out.println("Please enter 1 - 5");
+					System.out.println("Please enter 1, 2, 3, 4, 5, or 6");
 					break;
 			}
 			
@@ -314,7 +314,7 @@ public class MainMenu
 	    	System.out.println("* 1. Address                *");
 	    	System.out.println("* 2. Meal                   *");
 	    	System.out.println("* 3. Credit Card            *");
-	    	System.out.println("* 5. Selection Menu         *");
+	    	System.out.println("* 4. Selection Menu         *");
 	    	System.out.println("*                           *");
 	    	System.out.println("*****************************");
 	    	
@@ -333,12 +333,9 @@ public class MainMenu
 					addCreditCard();
 					break;
 				case 4:
-	
-					break;
-				case 5:
 					return 1;
 				default:
-					System.out.println("Please enter 1 or 2");
+					System.out.println("Please enter 1, 2, 3, or 4");
 					break;
 			}
 			
@@ -631,7 +628,7 @@ public class MainMenu
 				case 5:
 					return 1;
 				default:
-					System.out.println("Please enter 1 or 2");
+					System.out.println("Please enter 1, 2, 3, 4, or 5");
 					break;
 			}
 			
@@ -1194,7 +1191,7 @@ public class MainMenu
 					item_to_update = "ORDER_ON_HOLD";
 					break;
 				default:
-					System.out.println("Please enter 1, or 2");
+					System.out.println("Please enter 1 or 2");
 					break;
 			}
 			

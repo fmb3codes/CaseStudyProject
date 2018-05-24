@@ -172,7 +172,7 @@ public class OrderServices implements DatabaseServices
 			
 						
 			try {
-				PreparedStatement oracleStmt = con.prepareStatement("Select O_ID as \"Order ID\", ORDER_DATE as \"Order Date\", DELIVERY_DATE as \"Delivery Date\", ORDER_ON_HOLD as \"Order Status\" from Orders where C_ID=?");
+				PreparedStatement oracleStmt = con.prepareStatement("Select O_ID as \"Order ID\", ORDER_DATE as \"Order Date\", DELIVERY_DATE as \"Delivery Date\", ORDER_ON_HOLD as \"Order Status\", ORDER_STATUS.NAME as \"Delivery Status\" from Orders, Order_status where Order_status.OS_ID=Orders.OS_ID AND C_ID=?");
 				oracleStmt.setString(1, custID);
 				
 				
@@ -253,7 +253,7 @@ public class OrderServices implements DatabaseServices
 			
 						
 			try {
-				PreparedStatement oracleStmt = con.prepareStatement("Select O_ID as \"Order ID\", ORDER_DATE as \"Order Date\", DELIVERY_DATE as \"Delivery Date\", ORDER_ON_HOLD as \"Order Status\" from Orders, Order_Status where Orders.OS_ID=Order_Status.OS_ID AND Order_Status.NAME = 'PENDING' AND C_ID=?");
+				PreparedStatement oracleStmt = con.prepareStatement("Select O_ID as \"Order ID\", ORDER_DATE as \"Order Date\", DELIVERY_DATE as \"Delivery Date\", ORDER_ON_HOLD as \"Order Status\", Order_Status.NAME as \"Delivery Status\" from Orders, Order_Status where Orders.OS_ID=Order_Status.OS_ID AND Order_Status.NAME = 'PENDING' AND C_ID=?");
 				oracleStmt.setString(1, custID);
 				
 				
