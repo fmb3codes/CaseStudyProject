@@ -7,6 +7,9 @@ public class MealTypes {
 	private String  MT_ID;
 	private String name;
 	
+	public MealTypes()
+	{}
+	
 	/**
 	 * @param mT_ID
 	 * @param name
