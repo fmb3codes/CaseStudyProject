@@ -2,16 +2,15 @@ package services;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
+//import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-<<<<<<< HEAD
-=======
+
 import java.text.ParseException;
->>>>>>> fc5ebb77a016494d6d10f5e5aca5085f7c8d2dff
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

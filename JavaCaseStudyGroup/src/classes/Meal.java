@@ -22,7 +22,8 @@ public class Meal {
 	}
 	
 	public Meal() {
-		// TODO Auto-generated constructor stub
+		this.mealOfDay = "19-05-2018";
+		this.imagePath = "C:\\image_path";
 	}
 
 
