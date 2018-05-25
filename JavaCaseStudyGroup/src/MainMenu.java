@@ -754,7 +754,7 @@ public class MainMenu
 		int locOp = 0;
 
 		int selected;
-		//input.nextLine(); //flushes any leftover characters such as carriage return
+		input.nextLine(); //flushes any leftover characters such as carriage return
 		
 		do
 		{
@@ -863,7 +863,7 @@ public class MainMenu
 		
 	}
 	
-	public static void deleteOrder(){	
+	public static int deleteOrder(){	
 		ArrayList<String> ids = new ArrayList<String>();
 		ArrayList<Integer> selection = new ArrayList<Integer>();
 		int locOp = 0;
@@ -878,13 +878,21 @@ public class MainMenu
 			Orders order = new Orders();
 			//order.displayForID(currentCustomer.getID());
 			ids = orderServices.getAllOrderIDs(currentCustomer.getID());
+			
+			if(ids.isEmpty())
+			{
+				System.out.println("No order been placed");
+				return 1;
+			}
+			
+			System.out.println("ids" + ids.toString());
 			for(String i : ids)
 			{
 				locOp++;
 				selection.add(locOp);
 			}
 			
-			
+			System.out.println("selection" + selection.toString());
 	    	do
 			{
 				System.out.print("Enter your order number ");
@@ -896,7 +904,6 @@ public class MainMenu
 	    	order.setCustomer_id(currentCustomer.getID());
 			orderServices =  new OrderServices(getConnected, order);
 			
-				
 	    	orderServices.Delete();
 				
 				
@@ -917,6 +924,8 @@ public class MainMenu
 				oraCallStmt.execute();
 				System.out.println("Order " + order.getOrder_id() + " has been succesfully deleted");
 			} */
+			
+			return 1;
 
 			
 		}while(true);
