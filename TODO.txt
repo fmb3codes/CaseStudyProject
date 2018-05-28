@@ -1,0 +1,3 @@
+* Remove sequences from script files. Apparantly Liji
+does not like them
+
