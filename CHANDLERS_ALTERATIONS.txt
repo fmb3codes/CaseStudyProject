@@ -1,0 +1,2 @@
+* altered create and drop scripts to remove sequences (Liji's request)
+
